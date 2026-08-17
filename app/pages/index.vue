@@ -39,7 +39,7 @@ const { data, error } = await useFetch(
         <div class="flex flex-col">
           
           <div v-if="item.image && item.image.length > 0" class="mb-6 overflow-hidden bg-gray-100 aspect-[4/3]">
-            <NuxtLink :to="`/logs/${item.slug}`">
+            <NuxtLink :to="`/texts/${item.slug}`">
               <img 
                 :src="item.image[0].url + '?w=800&q=80'" 
                 class="w-full h-full object-cover group-hover:scale-105 transition-all duration-700 ease-in-out"
@@ -53,7 +53,7 @@ const { data, error } = await useFetch(
               class="text-2xl mb-2 group-hover:text-blue-600 transition-colors"
               style="font-family: 'DotGothic16', sans-serif !important; font-weight: 400 !important;"
             >
-              <NuxtLink :to="`/logs/${item.slug}`">
+              <NuxtLink :to="`/texts/${item.slug}`">
                 {{ item.title }}
               </NuxtLink>
             </h2>

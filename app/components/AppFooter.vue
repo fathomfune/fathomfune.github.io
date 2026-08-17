@@ -6,7 +6,6 @@
       </div>
 
       <nav class="flex flex-wrap gap-x-4 gap-y-2 text-[14px] text-gray-900">
-        <NuxtLink to="/texts" class="hover:text-gray-600 transition-colors">Texts</NuxtLink>
         <NuxtLink to="/soilsnap" class="hover:text-gray-600 transition-colors">soilSnap</NuxtLink>
         <a
           href="https://www.instagram.com/Fathomyrfn"
