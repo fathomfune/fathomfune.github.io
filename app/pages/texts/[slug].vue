@@ -203,10 +203,9 @@ watch(
           <div class="logs-title-fixed">
             <NuxtLink
               to="/"
-              class="inline-flex items-center gap-1 mb-4 text-[11px] text-gray-400 hover:text-gray-900 transition-colors"
+              class="inline-flex items-center mb-4 text-sm text-gray-400 hover:text-gray-900 transition-colors"
             >
-              <Icon name="lucide:undo-2" class="size-3.5" />
-              back
+              ↩
             </NuxtLink>
             <h1 class="mb-4 text-gray-900 font-garamond min-w-0 whitespace-normal break-words [overflow-wrap:anywhere] leading-tight">
               {{ item.title }}
