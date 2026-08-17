@@ -6,23 +6,16 @@
       </div>
 
       <nav class="flex flex-wrap gap-x-4 gap-y-2 text-[14px] text-gray-900">
-        <NuxtLink to="/soilsnap" class="hover:text-gray-600 transition-colors">soilSnap</NuxtLink>
+        <NuxtLink to="/soilsnap" class="hover:text-gray-600 transition-colors">soilsnap</NuxtLink>
         <a
-          href="https://www.instagram.com/Fathomyrfn"
+          href="https://www.instagram.com/fathomfune"
           target="_blank"
           rel="noopener noreferrer"
           class="hover:text-gray-600 transition-colors"
         >
           Instagram
         </a>
-        <a
-          href="https://www.youtube.com/@FathomyrFn"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="hover:text-gray-600 transition-colors"
-        >
-          YouTube
-        </a>
+   
       </nav>
     </div>
   </footer>
