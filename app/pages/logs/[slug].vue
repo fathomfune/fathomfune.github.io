@@ -4,7 +4,7 @@ const slug = route.params.slug
 const config = useRuntimeConfig()
 
 const { data: response, error } = await useFetch(
-  `https://${config.public.microcmsServiceDomain}.microcms.io/api/v1/logs`,
+  `https://${config.public.microcmsServiceDomain}.microcms.io/api/v1/texts`,
   {
     params: {
       limit: 100

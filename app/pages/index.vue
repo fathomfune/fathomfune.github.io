@@ -1,7 +1,7 @@
 <script setup>
 const config = useRuntimeConfig()
 const { data, error } = await useFetch(
-  `https://${config.public.microcmsServiceDomain}.microcms.io/api/v1/logs`,
+  `https://${config.public.microcmsServiceDomain}.microcms.io/api/v1/texts`,
   {
     headers: {
       'X-MICROCMS-API-KEY': config.public.microcmsApiKey
