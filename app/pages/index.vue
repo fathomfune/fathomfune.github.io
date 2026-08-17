@@ -1,84 +1,107 @@
+<template>
+  <div
+    class="hidden sm:block absolute inset-0 pointer-events-none transition-opacity duration-300"
+    :class="isDissolving ? 'opacity-0' : 'opacity-100'"
+  >
+    <NuxtLink v-for="(link, i) in scatterLinks" :key="link.label"
+      :to="link.to"
+      :target="link.external ? '_blank' : undefined"
+      :rel="link.external ? 'noopener noreferrer' : undefined"
+      class="sparkle-link group pointer-events-auto absolute inline-flex items-center gap-1 text-[10.5px] text-gray-400 tracking-widest hover:text-gray-900 transition-colors duration-500"
+      :style="{ top: link.top, left: link.left, right: link.right }"
+    >
+      <span class="inline-block transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] rotate-45 group-hover:rotate-0">+</span>{{ link.label }}
+
+      <span
+        v-for="(p, pi) in sparkles" :key="pi"
+        class="sparkle-particle pointer-events-none absolute left-1/2 top-1/2 text-gray-400"
+        :style="{ '--dx': p.dx, '--dy': p.dy, animationDelay: p.delay }"
+      >{{ p.ch }}</span>
+    </NuxtLink>
+
+    <button
+      v-for="(symbol, si) in shuffleSymbols" :key="symbol.ch"
+      type="button"
+      class="pointer-events-auto absolute text-[11px] text-gray-600 hover:text-gray-900 transition-colors duration-500"
+      :style="{ top: symbol.top, left: symbol.left, right: symbol.right }"
+      @click="shufflePositions"
+    >{{ symbol.ch }}</button>
+  </div>
+</template>
+
 <script setup>
-const config = useRuntimeConfig()
-const { data, error } = await useFetch(
-  `https://${config.public.microcmsServiceDomain}.microcms.io/api/v1/texts`,
-  {
-    headers: {
-      'X-MICROCMS-API-KEY': config.public.microcmsApiKey
-    }
-  }
-)
+definePageMeta({ layout: 'hub' })
+
+const sparkles = [
+  { ch: '⁺', dx: '18px', dy: '-16px', delay: '0s' },
+  { ch: '⊹', dx: '-16px', dy: '-18px', delay: '0.06s' },
+  { ch: '𖦹', dx: '-18px', dy: '14px', delay: '0.03s' },
+  { ch: '⁺', dx: '2px', dy: '-24px', delay: '0.09s' }
+]
+
+const scatterLinks = ref([
+  { to: '/texts', label: 'texts', top: '10%', left: '42%' },
+  { to: '/', label: 'about', top: '70%', right: '6%' },
+  { to: '/soilsnap', label: 'soilsnap', top: '44%', left: '58%' },
+  { to: '/contact', label: 'contact', top: '20%', right: '16%' },
+  { to: '/', label: 'sounds', top: '88%', left: '46%' },
+  { to: 'https://www.instagram.com/fathomfune', label: 'instagram', top: '60%', right: '30%', external: true }
+])
+
+const shuffleSymbols = [
+  { ch: '+ ⁺', top: '30%', right: '4%' },
+  { ch: '⁺ ⊹', top: '56%', left: '40%' },
+  { ch: '⊹𓂃 ࣪', top: '94%', left: '70%' },
+  { ch: '☄︎.𖥔 ݁', top: '12%', left: '48%' }
+]
+
+const isDissolving = ref(false)
+
+function randomTop() {
+  return `${Math.floor(Math.random() * 88) + 4}%`
+}
+
+function randomSide() {
+  return Math.random() > 0.5
+    ? { left: `${Math.floor(Math.random() * 50) + 40}%`, right: undefined }
+    : { left: undefined, right: `${Math.floor(Math.random() * 28) + 2}%` }
+}
+
+function shufflePositions() {
+  isDissolving.value = true
+  setTimeout(() => {
+    scatterLinks.value = scatterLinks.value.map(link => ({
+      ...link,
+      top: randomTop(),
+      ...randomSide()
+    }))
+    isDissolving.value = false
+  }, 300)
+}
 </script>
 
-<template>
-  <UContainer class="py-20">
-    <header class="flex flex-col items-start gap-8 w-[320px] ml-auto">
-      <div class="flex items-center gap-8">
-        <h1 class="text-7xl">
-          舟
-        </h1>
-        <h2>フネ・アジール</h2>
-      </div>
-      <div class="w-full">
-        <p class="w-full text-left text-xs text-gray-600 leading-relaxed">
-          Fune explore the creation of a system where, no matter the circumstances,
-          people can eat with peace of mind, sleep through the rain,
-          and face tomorrow with a calm heart.
-          <br>
-          At our core, there is a shared philosophy —
-          yet no fixed structure.
-          We are always in motion, constantly fluctuating, constantly becoming.
-          <br>
-          Today, we might be farmers, acupuncturists, carpenters, architects, or perhaps — alchemists.
-        </p>
-      </div>
-    </header>
+<style>
+.sparkle-particle {
+  opacity: 0;
+  font-size: 9px;
+  transform: translate(-50%, -50%);
+}
 
-    <div v-if="data" class="mt-40 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-24">
-      <div v-for="item in data.contents" :key="item.id" class="group">
-        <div class="flex flex-col">
-          
-          <div v-if="item.image && item.image.length > 0" class="mb-6 overflow-hidden bg-gray-100 aspect-[4/3]">
-            <NuxtLink :to="`/texts/${item.slug}`">
-              <img 
-                :src="item.image[0].url + '?w=800&q=80'" 
-                class="w-full h-full object-cover group-hover:scale-105 transition-all duration-700 ease-in-out"
-                :alt="item.title"
-              />
-            </NuxtLink>
-          </div>
+.sparkle-link:hover .sparkle-particle {
+  animation: sparkle-fly 0.7s ease-out forwards;
+}
 
-          <div class="px-1">
-            <h2 
-              class="text-2xl mb-2 group-hover:text-blue-600 transition-colors"
-              style="font-family: 'DotGothic16', sans-serif !important; font-weight: 400 !important;"
-            >
-              <NuxtLink :to="`/texts/${item.slug}`">
-                {{ item.title }}
-              </NuxtLink>
-            </h2>
-            
-            <div class="flex items-center gap-3 text-[10px] text-gray-400 mb-4 tracking-widest uppercase">
-           
-
-              <ClientOnly>
-                <span>{{ new Date(item.date).toLocaleDateString() }}</span>
-              </ClientOnly>
-            </div>
-
-            <p 
-              class="text-sm text-gray-500 leading-relaxed line-clamp-2"
-            >
-              {{ item.text }}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div v-else class="mt-40 py-20 text-center text-gray-300 animate-pulse tracking-widest uppercase text-xs">
-      <p v-if="error">Failed to load catalogue.</p>
-      <p v-else style="font-family: 'Coral Pixels', sans-serif;">Loading Logs...</p>
-    </div>
-  </UContainer>
-</template>
+@keyframes sparkle-fly {
+  0% {
+    transform: translate(-50%, -50%) translate(0, 0) scale(0.4);
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) translate(var(--dx), var(--dy)) scale(1);
+    opacity: 0;
+  }
+}
+</style>

@@ -24,13 +24,13 @@
 
     <aside class="w-full sm:w-1/5 min-w-0 sm:sticky sm:top-32 h-fit">
       <div>
-        <h2 class="text-xl font-bold mb-4">soilSnap</h2>
-        <p class="text-[10px] leading-relaxed break-words text-gray-700">
-          We are practicing to produce as much as possible with our own hands. We are researching the creation of a system that allows people in any situation to eat with peace of mind, sleep through the rain, and face tomorrow. We have a core but not a coherent structure, and we are always shaking (fluctuating).
-          <br><br>
-          Today we could be ..<br>
-          farmer, acupuncturist, carpenter, architect, alchemist
-        </p>
+        <h2 class="text-lg font-bold mb-2">soilsnap</h2>
+        <NuxtLink
+          to="/"
+          class="inline-flex items-center text-sm text-gray-400 hover:text-gray-900 transition-colors"
+        >
+          ↩
+        </NuxtLink>
       </div>
     </aside>
 

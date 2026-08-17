@@ -5,7 +5,9 @@
         Fune All Rights Reserved.
       </div>
 
-      <nav class="flex flex-wrap gap-x-4 gap-y-2 text-[14px] text-gray-900">
+      <nav class="flex flex-wrap gap-x-4 gap-y-2 text-[10px] text-gray-900 tracking-widest">
+        <NuxtLink to="/" class="hover:text-gray-600 transition-colors">about</NuxtLink>
+        <NuxtLink to="/texts" class="hover:text-gray-600 transition-colors">texts</NuxtLink>
         <NuxtLink to="/soilsnap" class="hover:text-gray-600 transition-colors">soilsnap</NuxtLink>
         <a
           href="https://www.instagram.com/fathomfune"
@@ -15,7 +17,6 @@
         >
           instagram
         </a>
-   
       </nav>
     </div>
   </footer>

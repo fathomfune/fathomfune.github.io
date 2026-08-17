@@ -288,7 +288,7 @@ watch(
             </div>
           </div>
           <NuxtLink
-            to="/"
+            to="/texts"
             class="inline-flex items-center mt-6 text-sm text-gray-400 hover:text-gray-900 transition-colors"
             :style="{
               gridColumn: '2',
