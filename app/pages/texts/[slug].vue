@@ -295,7 +295,7 @@ watch(
               gridRow: String((hasImage ? 2 : 1) + numberedLines.length)
             }"
           >
-            ↩
+            ↩︎
           </NuxtLink>
           </div>
         </div>

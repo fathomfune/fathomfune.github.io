@@ -29,7 +29,7 @@
           to="/"
           class="inline-flex items-center text-sm text-gray-400 hover:text-gray-900 transition-colors"
         >
-          ↩
+          ↩︎
         </NuxtLink>
       </div>
     </aside>
@@ -165,15 +165,31 @@ const allSoilsnaps = computed(() => {
   })
 })
 
-// 投稿されたtagから実際に使われているカテゴリーだけを、登場順に積み上げる（🕳は常時固定で末尾に表示）
+// まだ投稿がなくても常に表示する野菜カテゴリー一覧
+const FIXED_CATEGORIES = [
+  'rice', 'watermelon', 'tomato', 'soy bean', 'beetroot', 'carrot', 'turnip',
+  'radish', 'sweet potato', 'potato', 'okra', 'ginger', 'onion', 'garlic',
+  'plam', 'cucumber'
+]
+
+// 固定の野菜カテゴリー＋投稿tagにだけ登場する未知のカテゴリーを、登場順に積み上げる（🕳は常時固定で末尾に表示）
 const categories = computed(() => {
   const seen = new Set()
   const list = ['All']
+
+  for (const label of FIXED_CATEGORIES) {
+    const key = label.toLowerCase()
+    if (seen.has(key)) continue
+    seen.add(key)
+    list.push(label)
+  }
+
   for (const item of allSoilsnaps.value) {
     if (!item.categoryLabel || seen.has(item.category)) continue
     seen.add(item.category)
     list.push(item.categoryLabel)
   }
+
   if (!list.includes('🕳')) list.push('🕳')
   return list
 })
