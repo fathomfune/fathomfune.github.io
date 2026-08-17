@@ -9,6 +9,12 @@
   --font-sans: "Helvetica", "Yu Gothic", "YuGothic", "游ゴシック", sans-serif;
 }
 
+html,
+body {
+  background-color: #fff !important;
+  color-scheme: light;
+}
+
 body {
   font-family: "Helvetica", "Yu Gothic", "YuGothic", "游ゴシック", sans-serif !important;
   font-weight: 100;

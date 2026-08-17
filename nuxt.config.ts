@@ -4,6 +4,12 @@ export default defineNuxtConfig({
   // 1. デザイン部品（カードなど）を有効にする
   modules: ['@nuxt/ui', '@nuxt/eslint'],
 
+  // 1.5. OSのダークモード設定に関わらず常にライト（白背景）で表示する
+  colorMode: {
+    preference: 'light',
+    fallback: 'light'
+  },
+
   // 2. スタイル設定（既存のcss設定も残しています）
   css: ['@/assets/css/main.css'],
 
