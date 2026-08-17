@@ -1,8 +1,8 @@
 <template>
-  <footer class="w-full mt-24 py-10 px-3 sm:px-[8.89vw]">
-    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-      <div class="text-[10px] text-gray-400 tracking-widest uppercase">
-        © 2026 Fune All Rights Reserved.
+  <footer class="w-full mt-24 py-10">
+    <div class="pl-4 sm:pl-6 pr-3 sm:pr-[8.89vw] flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div class="text-[10px] text-gray-400 tracking-widest">
+        Fune All Rights Reserved.
       </div>
 
       <nav class="flex flex-wrap gap-x-4 gap-y-2 text-[14px] text-gray-900">
@@ -15,7 +15,7 @@
         >
           Instagram
         </a>
-   
+
       </nav>
     </div>
   </footer>
