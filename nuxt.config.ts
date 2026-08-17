@@ -30,5 +30,12 @@ export default defineNuxtConfig({
       supabaseUrl: process.env.NUXT_PUBLIC_SUPABASE_URL || '',
       supabaseAnonKey: process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY || '',
     }
+  },
+
+  // 5. 個別記事の取得が一時的に失敗しても、サイト全体のビルドは止めない
+  nitro: {
+    prerender: {
+      failOnError: false
+    }
   }
 })
