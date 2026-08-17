@@ -86,6 +86,46 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 20;
 }
 
+/* モバイル：タイトル固定をやめて本文と一緒にスクロールさせる（1カラムに畳む） */
+@media (max-width: 639px) {
+  .logs-shell {
+    padding-left: 22px;
+    padding-right: 22px;
+    box-sizing: border-box;
+  }
+
+  .logs-title-fixed {
+    position: static;
+    top: auto;
+    left: auto;
+    width: auto;
+    padding-right: 0;
+    z-index: auto;
+    margin-bottom: 24px;
+  }
+
+  .logs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .logs-grid > * {
+    grid-column: 1 !important;
+  }
+
+  .logs-note-row {
+    grid-row: auto !important;
+    justify-self: start !important;
+    width: auto !important;
+    margin-top: 4px;
+    margin-bottom: 16px;
+  }
+
+  .logs-note-row > div {
+    position: static !important;
+    transform: none !important;
+  }
+}
+
 .logs-row-sep {
   padding-bottom: var(--logs-row-pad, 12px);
 }

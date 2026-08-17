@@ -197,7 +197,7 @@ watch(
   <div class="min-h-screen relative">
     <div v-if="item" class="relative">
       <!-- スクロール可能なコンテンツエリア -->
-      <div style="padding-top: 120px; padding-bottom: 120px;">
+      <div class="pt-8 sm:pt-[120px] pb-8 sm:pb-[120px]">
         <div class="logs-shell">
           <!-- タイトル -->
           <div class="logs-title-fixed">
@@ -258,7 +258,7 @@ watch(
             :key="`note-row-${index}`"
             :class="[
               line.isBlank ? 'logs-row-blank' : 'logs-row-sep',
-              'text-[11px] justify-self-end w-[220px] overflow-visible relative'
+              'logs-note-row text-[11px] justify-self-end w-[220px] overflow-visible relative'
             ]"
             :style="{
               gridColumn: '4',
