@@ -3,7 +3,7 @@
     class="hidden sm:block absolute inset-0 pointer-events-none transition-opacity duration-300"
     :class="isDissolving ? 'opacity-0' : 'opacity-100'"
   >
-    <NuxtLink v-for="(link, i) in scatterLinks" :key="link.label"
+    <NuxtLink v-for="link in scatterLinks" :key="link.label"
       :to="link.to"
       :target="link.external ? '_blank' : undefined"
       :rel="link.external ? 'noopener noreferrer' : undefined"
@@ -20,7 +20,7 @@
     </NuxtLink>
 
     <button
-      v-for="(symbol, si) in shuffleSymbols" :key="symbol.ch"
+      v-for="symbol in shuffleSymbols" :key="symbol.ch"
       type="button"
       class="pointer-events-auto absolute text-[11px] text-gray-600 hover:text-gray-900 transition-colors duration-500"
       :style="{ top: symbol.top, left: symbol.left, right: symbol.right }"

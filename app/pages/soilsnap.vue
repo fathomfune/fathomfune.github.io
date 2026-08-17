@@ -94,6 +94,7 @@ const config = useRuntimeConfig()
 const selectedCategory = ref('All')
 const emptyArt = ref('')
 
+/* eslint-disable no-irregular-whitespace -- full-width spaces align the ASCII art below */
 const emptyArts = [
   `  
      🌱
@@ -108,6 +109,7 @@ const emptyArts = [
 Still growing
  `
 ]
+/* eslint-enable no-irregular-whitespace */
 
 // 初期のAA
 emptyArt.value = emptyArts[0]
@@ -118,7 +120,7 @@ watch(selectedCategory, () => {
   emptyArt.value = emptyArts[i]
 })
 
-const { data: response, error } = await useFetch(
+const { data: response } = await useFetch(
   `https://${config.public.microcmsServiceDomain}.microcms.io/api/v1/soilsnap`,
   {
     params: {

@@ -2,7 +2,7 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   
   // 1. デザイン部品（カードなど）を有効にする
-  modules: ['@nuxt/ui'],
+  modules: ['@nuxt/ui', '@nuxt/eslint'],
 
   // 2. スタイル設定（既存のcss設定も残しています）
   css: ['@/assets/css/main.css'],

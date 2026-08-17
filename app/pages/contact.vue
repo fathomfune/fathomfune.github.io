@@ -11,7 +11,7 @@
     </div>
 
     <span
-      v-for="(symbol, si) in shuffleSymbols" :key="symbol.ch"
+      v-for="symbol in shuffleSymbols" :key="symbol.ch"
       class="absolute text-[11px] text-gray-600"
       :style="{ top: symbol.top, left: symbol.left, right: symbol.right }"
     >{{ symbol.ch }}</span>
