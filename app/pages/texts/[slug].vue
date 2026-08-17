@@ -201,12 +201,6 @@ watch(
         <div class="logs-shell">
           <!-- タイトル -->
           <div class="logs-title-fixed">
-            <NuxtLink
-              to="/"
-              class="inline-flex items-center mb-4 text-sm text-gray-400 hover:text-gray-900 transition-colors"
-            >
-              ↩
-            </NuxtLink>
             <h1 class="mb-4 text-gray-900 font-garamond min-w-0 whitespace-normal break-words [overflow-wrap:anywhere] leading-tight">
               {{ item.title }}
             </h1>
@@ -294,6 +288,13 @@ watch(
             </div>
           </div>
           </div>
+
+          <NuxtLink
+            to="/"
+            class="inline-flex items-center mt-12 text-sm text-gray-400 hover:text-gray-900 transition-colors"
+          >
+            ↩
+          </NuxtLink>
         </div>
       </div>
     </div>
