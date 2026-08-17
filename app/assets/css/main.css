@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Coral+Pixels&family=DotGothic16&family=Cormorant+Garamond:wght@400;500;600&display=swap');
+
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+
+@theme {
+  /* デフォルトはHelvetica（英語用）、日本語には游ゴシック */
+  --font-sans: "Helvetica", "Yu Gothic", "YuGothic", "游ゴシック", sans-serif;
+}
+
+body {
+  font-family: "Helvetica", "Yu Gothic", "YuGothic", "游ゴシック", sans-serif !important;
+  font-weight: 100;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 英語テキストにHelveticaを適用 */
+:lang(en),
+[lang="en"] {
+  font-family: "Helvetica", sans-serif !important;
+}
+
+/* 日本語テキストに游ゴシックを適用 */
+:lang(ja),
+[lang="ja"] {
+  font-family: "Yu Gothic", "YuGothic", "游ゴシック", sans-serif !important;
+}
+
+/* デフォルトで日本語テキストに游ゴシックを適用（lang属性がない場合も） */
+p, span, div, li, td, th, label, button, a {
+  font-family: "Helvetica", "Yu Gothic", "YuGothic", "游ゴシック", sans-serif !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Helvetica", "Yu Gothic", "YuGothic", "游ゴシック", sans-serif !important;
+  font-weight: 500 !important;
+}
+
+/* Logsのタイトルだけ Garamond にしたい時用 */
+.font-garamond {
+  font-family: "Cormorant Garamond", Garamond, "Times New Roman", serif !important;
+}
+
+
+/* Logs本文（中央カラム） */
+.logs-body-line {
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  line-height: 1.85;
+
+}
+
+/* Logs：レイアウト（空白カラム + 本文 + スペーサー + 注釈） */
+.logs-shell {
+  --logs-title-left: 16px; /* left-4 相当 */
+  --logs-title-w: clamp(260px, 28vw, 520px);
+}
+
+.logs-grid {
+  display: grid;
+  gap: 0;
+  width: 100%;
+  align-items: start;
+  grid-template-columns:
+    /* タイトル領域の分、本文が被らないようガターを確保 */
+    calc(var(--logs-title-left) + var(--logs-title-w))
+    minmax(320px, 680px)
+    minmax(24px, 0.6fr)
+    minmax(180px, 1fr);
+}
+
+.logs-title-fixed {
+  position: fixed;
+  top: 120px;
+  left: var(--logs-title-left);
+  width: min(var(--logs-title-w), calc(100vw - (var(--logs-title-left) * 2)));
+  box-sizing: border-box;
+  padding-right: 12vw;
+  z-index: 20;
+}
+
+.logs-row-sep {
+  padding-bottom: var(--logs-row-pad, 12px);
+}
+
+.logs-row-blank {
+  padding-bottom: var(--logs-blank-row-pad, 24px);
+}
+
+/* 選択（コピー時ハイライト）で文字を“白で塗りつぶす” */
+::selection {
+  background: #fff;
+  color: #fff;
+  text-shadow: none;
+}
+::-moz-selection {
+  background: #fff;
+  color: #fff;
+  text-shadow: none;
+}

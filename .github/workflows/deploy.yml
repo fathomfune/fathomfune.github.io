@@ -1,0 +1,63 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Install node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Generate static site
+        run: pnpm exec nuxt generate
+        env:
+          NUXT_PUBLIC_MICROCMS_SERVICE_DOMAIN: ${{ secrets.NUXT_PUBLIC_MICROCMS_SERVICE_DOMAIN }}
+          NUXT_PUBLIC_MICROCMS_API_KEY: ${{ secrets.NUXT_PUBLIC_MICROCMS_API_KEY }}
+          NUXT_PUBLIC_YT_SHORTS_PLAYLIST_ID: ${{ secrets.NUXT_PUBLIC_YT_SHORTS_PLAYLIST_ID }}
+          NUXT_PUBLIC_GA_ID: ${{ secrets.NUXT_PUBLIC_GA_ID }}
+          NUXT_PUBLIC_SUPABASE_URL: ${{ secrets.NUXT_PUBLIC_SUPABASE_URL }}
+          NUXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NUXT_PUBLIC_SUPABASE_ANON_KEY }}
+
+      - name: Add .nojekyll
+        run: touch .output/public/.nojekyll
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .output/public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
