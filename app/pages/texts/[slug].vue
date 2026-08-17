@@ -287,14 +287,17 @@ watch(
               </div>
             </div>
           </div>
-          </div>
-
           <NuxtLink
             to="/"
-            class="inline-flex items-center mt-12 text-sm text-gray-400 hover:text-gray-900 transition-colors"
+            class="inline-flex items-center mt-6 text-sm text-gray-400 hover:text-gray-900 transition-colors"
+            :style="{
+              gridColumn: '2',
+              gridRow: String((hasImage ? 2 : 1) + numberedLines.length)
+            }"
           >
             ↩
           </NuxtLink>
+          </div>
         </div>
       </div>
     </div>
