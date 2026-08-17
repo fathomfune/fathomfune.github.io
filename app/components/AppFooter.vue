@@ -8,7 +8,6 @@
       <nav class="flex flex-wrap gap-x-4 gap-y-2 text-[14px] text-gray-900">
         <NuxtLink to="/texts" class="hover:text-gray-600 transition-colors">Texts</NuxtLink>
         <NuxtLink to="/soilsnap" class="hover:text-gray-600 transition-colors">soilSnap</NuxtLink>
-        <NuxtLink to="/fragments" class="hover:text-gray-600 transition-colors">Fragments</NuxtLink>
         <a
           href="https://www.instagram.com/Fathomyrfn"
           target="_blank"
