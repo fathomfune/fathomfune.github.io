@@ -11,7 +11,7 @@ const { data, error } = await useFetch(
 </script>
 
 <template>
-  <UContainer class="py-20 max-w-2xl">
+  <UContainer class="py-20 max-w-2xl mx-0 px-3 sm:px-0 sm:pl-[10.5vw] lg:px-0 lg:pl-[10.5vw]">
     <div v-if="data" class="flex flex-col">
       <NuxtLink
         v-for="item in data.contents"
@@ -19,7 +19,7 @@ const { data, error } = await useFetch(
         :to="`/texts/${item.slug}`"
         class="group block py-0.5"
       >
-        <h2 class="text-[10.5px] text-gray-900 font-garamond leading-tight group-hover:text-[#0365a6] transition-colors">
+        <h2 class="text-[11px] text-gray-900 font-garamond leading-tight group-hover:text-[#0365a6] transition-colors">
           {{ item.title }}
         </h2>
       </NuxtLink>

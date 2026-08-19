@@ -29,7 +29,7 @@
           to="/"
           class="inline-flex items-center text-sm text-gray-400 hover:text-gray-900 transition-colors"
         >
-          <Icon name="lucide:undo-2" class="w-3.5 h-3.5" />
+          ⤺ back
         </NuxtLink>
       </div>
     </aside>

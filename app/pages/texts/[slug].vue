@@ -295,7 +295,7 @@ watch(
               gridRow: String((hasImage ? 2 : 1) + numberedLines.length)
             }"
           >
-            <Icon name="lucide:undo-2" class="w-3.5 h-3.5" />
+            ⤺ back
           </NuxtLink>
           </div>
         </div>
