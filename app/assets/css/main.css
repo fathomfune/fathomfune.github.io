@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Coral+Pixels&family=DotGothic16&family=Cormorant+Garamond:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Coral+Pixels&family=DotGothic16&family=Cormorant+Garamond:wght@400;500;600&family=Shippori+Mincho:wght@400;500;600;700&display=swap');
 
 @import "tailwindcss";
 @import "@nuxt/ui";
@@ -43,9 +43,10 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 500 !important;
 }
 
-/* Logsのタイトルだけ Garamond にしたい時用 */
+/* Logsのタイトルだけ Garamond（英語）/ しっぽり明朝（日本語）にしたい時用 */
 .font-garamond {
-  font-family: "Cormorant Garamond", Garamond, "Times New Roman", serif !important;
+  font-family: "Cormorant Garamond", Garamond, "Shippori Mincho", "Times New Roman", serif !important;
+  font-weight: 400 !important;
 }
 
 

@@ -1,9 +1,10 @@
 <template>
   <div class="text-gray-900">
-    <div
+    <NuxtLink
+      to="/"
       style="font-family: 'Yu Gothic', 'YuGothic', '游ゴシック', sans-serif; font-size: clamp(9px, 1.9vh, 13px);"
-      class="mb-10"
-    >舟</div>
+      class="mb-10 inline-block hover:text-[#0365a6] transition-colors"
+    >舟</NuxtLink>
     <div
       class="whitespace-pre-wrap font-garamond"
       style="font-size: clamp(9px, 1.9vh, 13px); letter-spacing: 0.03em; line-height: 1.6;"

@@ -27,9 +27,9 @@
         <h2 class="text-lg font-bold mb-2">soilsnap</h2>
         <NuxtLink
           to="/"
-          class="inline-flex items-center text-sm text-gray-400 hover:text-gray-900 transition-colors"
+          class="inline-flex items-center text-[11px] text-gray-400 hover:text-[#0365a6] transition-colors"
         >
-          ⤺ back
+          ･: Back
         </NuxtLink>
       </div>
     </aside>

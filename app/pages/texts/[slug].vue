@@ -17,10 +17,43 @@ const { data: response, error } = await useFetch(
 
 const item = computed(() => response.value?.contents?.find(c => c.slug === slug))
 
+// --- 日本語 / 英語切り替え（一覧ページのトグルと状態を共有） ---
+const lang = useTextLang()
+const hasEnglish = computed(() => !!(item.value?.['title-en'] || item.value?.['text-en']))
+
+function setLang(value) {
+  lang.value = value
+}
+
+const displayTitle = computed(() => {
+  if (lang.value === 'en' && item.value?.['title-en']) return item.value['title-en']
+  return item.value?.title
+})
+
+// EN表示時はJAをサブに、JA表示時はENをサブに（上下反転）
+const subTitle = computed(() => {
+  if (lang.value === 'en' && item.value?.['title-en']) return item.value?.title
+  return item.value?.['title-en']
+})
+
+// HTMLエンティティをデコードする（v-htmlをやめてテキスト補間にしたため、&apos; 等が残らないよう自前で変換）
+const HTML_ENTITIES = {
+  amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ',
+  hellip: '…', mdash: '—', ndash: '–', lsquo: '‘', rsquo: '’', ldquo: '“', rdquo: '”'
+}
+function decodeHtmlEntities(str) {
+  if (!str) return str
+  return str
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+    .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(parseInt(dec, 10)))
+    .replace(/&([a-zA-Z]+);/g, (_, name) => (name in HTML_ENTITIES ? HTML_ENTITIES[name] : `&${name};`))
+}
+
 // microCMSの改行を正規化して「行」配列にする（\r\n や <br> / <p> を反映）
 const textLines = computed(() => {
   // フィールド名ゆれ対策（text/body/content など）
   const raw =
+    (lang.value === 'en' ? item.value?.['text-en'] : null) ??
     item.value?.text ??
     item.value?.body ??
     item.value?.content ??
@@ -34,6 +67,8 @@ const textLines = computed(() => {
     .replace(/\r/g, '\n')
     // 文字列として "\n" が入ってるケースにも対応
     .replace(/\\n/g, '\n')
+    // リッチテキスト中の<img>はタグ除去前にマーカー化して残す（本文中に埋め込んだ画像対策）
+    .replace(/<img\b[^>]*?src=["']([^"']+)["'][^>]*>/gi, (_, src) => `\n[[img:${decodeHtmlEntities(src)}]]\n`)
     // リッチ系の改行要素も吸収
     .replace(/<br\s*\/?>/gi, '\n')
     // 空段落（= 1行空け）を保持
@@ -52,14 +87,15 @@ const textLines = computed(() => {
     .replace(/<[^>]+>/g, '')
     // 改行が多すぎる時は詰める（見た目の暴れ防止）
     .replace(/\n{3,}/g, '\n\n')
-  return normalized.split('\n')
+  return decodeHtmlEntities(normalized).split('\n')
 })
 
 // --- inline anchors (marker方式) ---
 // marker: [[note:kome]] → 本文中の「言葉」に紐づくanchorのslugとして使う
-const NOTE_MARKER_RE = /\[\[note:([a-zA-Z0-9_-]+)\]\]/g
+// marker: [[img:URL]] → 本文（リッチテキスト）に埋め込まれた画像
+const NOTE_MARKER_RE = /\[\[(note|img):([^\]]+)\]\]/g
 
-// 本文を「テキスト断片 + anchorマーカー」パーツに分割する
+// 本文を「テキスト断片 + anchorマーカー + 画像マーカー」パーツに分割する
 const numberedLines = computed(() => {
   return textLines.value.map(line => {
     const parts = []
@@ -72,14 +108,19 @@ const numberedLines = computed(() => {
     while ((m = NOTE_MARKER_RE.exec(s)) !== null) {
       const start = m.index
       const end = start + m[0].length
-      const slug = String(m[1])
+      const kind = m[1]
+      const value = String(m[2])
 
       if (start > lastIndex) {
         parts.push({ type: 'text', value: s.slice(lastIndex, start) })
       }
 
-      parts.push({ type: 'note', slug })
-      noteEntries.push({ slug })
+      if (kind === 'img') {
+        parts.push({ type: 'image', src: value })
+      } else {
+        parts.push({ type: 'note', slug: value })
+        noteEntries.push({ slug: value })
+      }
       lastIndex = end
     }
 
@@ -94,7 +135,8 @@ const numberedLines = computed(() => {
     }
 
     const textOnly = parts.filter(p => p.type === 'text').map(p => p.value).join('')
-    const isBlank = textOnly.trim() === '' && noteEntries.length === 0
+    const hasImagePart = parts.some(p => p.type === 'image')
+    const isBlank = textOnly.trim() === '' && noteEntries.length === 0 && !hasImagePart
 
     return { parts, noteEntries, isBlank }
   })
@@ -201,13 +243,44 @@ watch(
         <div class="logs-shell">
           <!-- タイトル -->
           <div class="logs-title-fixed">
-            <h1 class="mb-4 text-gray-900 font-garamond min-w-0 whitespace-normal break-words [overflow-wrap:anywhere] leading-tight">
-              {{ item.title }}
-            </h1>
-            <div class="text-[10px] text-gray-500">
+            <div class="mb-4">
+              <h1 class="text-gray-900 font-garamond min-w-0 whitespace-normal break-words [overflow-wrap:anywhere] leading-tight">
+                {{ displayTitle }}
+              </h1>
+              <p
+                v-if="subTitle"
+                class="mt-1 text-[11px] text-gray-400 font-garamond min-w-0 whitespace-normal break-words [overflow-wrap:anywhere] leading-tight"
+              >
+                {{ subTitle }}
+              </p>
+            </div>
+            <div class="flex items-center gap-3 text-[10px] text-gray-500">
               <ClientOnly>
                 <time>{{ formattedDate }}</time>
               </ClientOnly>
+              <div v-if="hasEnglish" class="flex items-center gap-1.5 text-[11px]">
+                <button
+                  type="button"
+                  :class="[
+                    'transition-colors',
+                    lang === 'ja' ? 'text-gray-900 font-medium' : 'text-gray-400 hover:text-gray-600'
+                  ]"
+                  @click="setLang('ja')"
+                >
+                  JA
+                </button>
+                <span class="text-gray-300">/</span>
+                <button
+                  type="button"
+                  :class="[
+                    'transition-colors',
+                    lang === 'en' ? 'text-gray-900 font-medium' : 'text-gray-400 hover:text-gray-600'
+                  ]"
+                  @click="setLang('en')"
+                >
+                  EN
+                </button>
+              </div>
             </div>
           </div>
 
@@ -241,6 +314,14 @@ watch(
             <div class="logs-body-line text-gray-900">
               <template v-for="(part, pIndex) in line.parts" :key="pIndex">
                 <span v-if="part.type === 'text'">{{ part.value }}</span>
+
+                <!-- 本文中に埋め込まれた画像 -->
+                <img
+                  v-else-if="part.type === 'image'"
+                  :src="part.src"
+                  class="block max-w-full object-cover"
+                  alt=""
+                >
 
                 <!-- 注釈マーカー：数字は振らず点だけ。中身は右の注釈パネルに常に表示 -->
                 <sup
@@ -289,13 +370,13 @@ watch(
           </div>
           <NuxtLink
             to="/texts"
-            class="inline-flex items-center mt-6 text-sm text-gray-400 hover:text-gray-900 transition-colors"
+            class="inline-flex items-center mt-6 text-[11px] text-gray-400 hover:text-[#0365a6] transition-colors"
             :style="{
               gridColumn: '2',
               gridRow: String((hasImage ? 2 : 1) + numberedLines.length)
             }"
           >
-            ⤺ back
+            ･: Back
           </NuxtLink>
           </div>
         </div>

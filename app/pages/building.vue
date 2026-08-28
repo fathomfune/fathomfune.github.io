@@ -6,9 +6,9 @@
 
     <NuxtLink
       to="/"
-      class="inline-flex items-center text-sm text-gray-400 hover:text-[#0365a6] transition-colors"
+      class="inline-flex items-center text-[11px] text-gray-400 hover:text-[#0365a6] transition-colors"
     >
-      ⤺ back
+      ･: Back
     </NuxtLink>
   </div>
 </template>
