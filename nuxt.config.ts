@@ -16,6 +16,8 @@ export default defineNuxtConfig({
   // 3. おしゃれフォント（Monsieur La Doulaise）をGoogleから読み込む
   app: {
     head: {
+      // タブに表示されるサイト名
+      title: '舟',
       link: [
         {
           rel: 'stylesheet',

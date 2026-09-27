@@ -4,7 +4,7 @@ const slug = route.params.slug
 const config = useRuntimeConfig()
 
 const { data: response, error } = await useFetch(
-  `https://${config.public.microcmsServiceDomain}.microcms.io/api/v1/texts`,
+  `https://${config.public.microcmsServiceDomain}.microcms.io/api/v1/writings`,
   {
     params: {
       limit: 100
@@ -369,7 +369,7 @@ watch(
             </div>
           </div>
           <NuxtLink
-            to="/texts"
+            to="/writings"
             class="inline-flex items-center mt-6 text-[11px] text-gray-400 hover:text-[#0365a6] transition-colors"
             :style="{
               gridColumn: '2',

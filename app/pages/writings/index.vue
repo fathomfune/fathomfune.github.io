@@ -1,7 +1,7 @@
 <script setup>
 const config = useRuntimeConfig()
 const { data, error } = await useFetch(
-  `https://${config.public.microcmsServiceDomain}.microcms.io/api/v1/texts`,
+  `https://${config.public.microcmsServiceDomain}.microcms.io/api/v1/writings`,
   {
     headers: {
       'X-MICROCMS-API-KEY': config.public.microcmsApiKey
@@ -63,11 +63,11 @@ function titleFor(item) {
       <NuxtLink
         v-for="item in data.contents"
         :key="item.id"
-        :to="`/texts/${item.slug}`"
+        :to="`/writings/${item.slug}`"
         class="group block py-0.5"
       >
         <h2
-          class="text-gray-900 font-garamond leading-tight group-hover:text-[#0365a6] transition-colors"
+          class="writings-index-title text-gray-900 font-garamond leading-tight group-hover:text-[#0365a6] transition-colors"
           :style="{
             fontSize: isEnglishFor(item)
               ? 'clamp(9px, 1.9vh, 13px)'

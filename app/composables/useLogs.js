@@ -2,7 +2,7 @@ export const useLogs = async () => {
     const config = useRuntimeConfig()
   
     const { data, error } = await useFetch(
-      `https://${config.public.microcmsServiceDomain}.microcms.io/api/v1/texts`,
+      `https://${config.public.microcmsServiceDomain}.microcms.io/api/v1/writings`,
       {
         headers: {
           'X-MICROCMS-API-KEY': config.public.microcmsApiKey

@@ -8,10 +8,10 @@
         :to="link.to"
         :target="link.external ? '_blank' : undefined"
         :rel="link.external ? 'noopener noreferrer' : undefined"
-        class="sparkle-link group pointer-events-auto absolute inline-flex items-center gap-1 text-[10.5px] text-gray-600 tracking-widest hover:text-[#0365a6] transition-colors duration-500"
+        class="sparkle-link group pointer-events-auto absolute inline-flex items-center gap-1 font-garamond text-[10.5px] text-gray-600 tracking-widest hover:text-[#0365a6] transition-colors duration-500"
         :style="{ top: link.top, left: link.left, right: link.right }"
       >
-        <span class="inline-block transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] rotate-45 group-hover:rotate-0">+</span>{{ link.label }}
+        <span class="inline-block transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] rotate-45 group-hover:rotate-0">{{ link.mark }}</span>{{ link.label }}
 
         <span
           v-for="(p, pi) in sparkles" :key="pi"
@@ -34,10 +34,10 @@
         :to="link.to"
         :target="link.external ? '_blank' : undefined"
         :rel="link.external ? 'noopener noreferrer' : undefined"
-        class="group absolute inline-flex items-center gap-1 text-[11px] text-gray-600 tracking-widest hover:text-[#0365a6] transition-colors duration-500"
+        class="group absolute inline-flex items-center gap-1 font-garamond text-[11px] text-gray-600 tracking-widest hover:text-[#0365a6] transition-colors duration-500"
         :style="{ top: link.top, left: link.left, right: link.right }"
       >
-        <span class="inline-block transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] rotate-45 group-hover:rotate-0">+</span>{{ link.label }}
+        <span class="inline-block transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] rotate-45 group-hover:rotate-0">{{ link.mark }}</span>{{ link.label }}
       </NuxtLink>
 
       <span
@@ -46,6 +46,16 @@
         :style="{ top: symbol.top, left: symbol.left, right: symbol.right }"
       >{{ symbol.ch }}</span>
     </div>
+
+    <p class="sm:hidden mb-10 mx-3 font-garamond text-gray-400 whitespace-nowrap" style="font-size: 10.5px; letter-spacing: 0.03em; line-height: 1.6;">
+      Copyright © Fune All rights reserved. Built by
+      <a
+        href="https://www.instagram.com/fylzith/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="font-garamond hover:text-gray-600 transition-colors"
+      >Rina arai</a>
+    </p>
   </div>
 </template>
 
@@ -60,21 +70,21 @@ const sparkles = [
 ]
 
 const scatterLinks = ref([
-  { to: '/texts', label: 'texts', top: '10%', left: '42%' },
-  { to: '/building', label: 'yao', top: '70%', right: '6%' },
-  { to: '/soilsnap', label: 'soilsnap', top: '44%', left: '58%' },
-  { to: '/contact', label: 'contact', top: '20%', right: '16%' },
-  { to: '/building', label: 'sounds', top: '88%', left: '46%' },
-  { to: 'https://www.instagram.com/fathomfune', label: 'instagram', top: '60%', right: '30%', external: true }
+  { to: '/writings', label: 'Writings', mark: '⁺', top: '10%', left: '42%' },
+  { to: '/building', label: 'Yao', mark: '⊹', top: '70%', right: '6%' },
+  { to: '/soilsnap', label: 'Soilsnap', mark: '⁺', top: '44%', left: '58%' },
+  { to: '/contact', label: 'Contact', mark: '⊹', top: '20%', right: '16%' },
+  { to: '/building', label: 'Sounds', mark: '⁺', top: '88%', left: '46%' },
+  { to: 'https://www.instagram.com/fathomfune', label: 'Instagram', mark: '⊹', top: '60%', right: '30%', external: true }
 ])
 
 const mobileScatterLinks = [
-  { to: '/texts', label: 'texts', top: '4%', left: '8%' },
-  { to: '/building', label: 'yao', top: '20%', right: '10%' },
-  { to: '/soilsnap', label: 'soilsnap', top: '40%', left: '45%' },
-  { to: '/contact', label: 'contact', top: '55%', left: '5%' },
-  { to: '/building', label: 'sounds', top: '72%', right: '20%' },
-  { to: 'https://www.instagram.com/fathomfune', label: 'instagram', top: '90%', left: '30%', external: true }
+  { to: '/writings', label: 'Writings', mark: '⁺', top: '4%', left: '8%' },
+  { to: '/building', label: 'Yao', mark: '⊹', top: '20%', right: '10%' },
+  { to: '/soilsnap', label: 'Soilsnap', mark: '⁺', top: '40%', left: '45%' },
+  { to: '/contact', label: 'Contact', mark: '⊹', top: '55%', left: '5%' },
+  { to: '/building', label: 'Sounds', mark: '⁺', top: '72%', right: '20%' },
+  { to: 'https://www.instagram.com/fathomfune', label: 'Instagram', mark: '⊹', top: '90%', left: '30%', external: true }
 ]
 
 const shuffleSymbols = [

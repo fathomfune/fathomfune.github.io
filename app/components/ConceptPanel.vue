@@ -7,12 +7,25 @@
     >舟</NuxtLink>
     <div
       class="whitespace-pre-wrap font-garamond"
-      style="font-size: clamp(9px, 1.9vh, 13px); letter-spacing: 0.03em; line-height: 1.6;"
+      style="font-size: 12.5px; letter-spacing: 0.03em; line-height: 1.6;"
     >{{ content }}</div>
+
+    <p v-if="isHome" class="hidden sm:block mt-8 font-garamond text-gray-400 whitespace-nowrap" style="font-size: 10.5px; letter-spacing: 0.03em; line-height: 1.6;">
+      Copyright © Fune All rights reserved. Built by
+      <a
+        href="https://www.instagram.com/fylzith/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="font-garamond hover:text-gray-600 transition-colors"
+      >Rina arai</a>
+    </p>
   </div>
 </template>
 
 <script setup>
+const route = useRoute()
+const isHome = computed(() => route.path === '/')
+
 const content = `Fune explores the creation
                     of a system where,
 no matter the circumstances,

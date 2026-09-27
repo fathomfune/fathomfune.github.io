@@ -165,11 +165,17 @@ const allSoilsnaps = computed(() => {
   })
 })
 
-// まだ投稿がなくても常に表示する野菜カテゴリー一覧
+// まだ投稿がなくても常に表示する野菜カテゴリー一覧（microCMSのtag選択肢と同じ並び）
 const FIXED_CATEGORIES = [
-  'rice', 'watermelon', 'tomato', 'soy bean', 'beetroot', 'carrot', 'turnip',
-  'radish', 'sweet potato', 'potato', 'okra', 'ginger', 'onion', 'garlic',
-  'plam', 'cucumber'
+  'Rice', 'Soy Bean', 'Piment', 'Tomato', 'Carrot', 'Radish', 'Turnip',
+  'Beetroot', 'Sweet Potato', 'Potato', 'Taro', 'Parsnip', 'Lotus Root',
+  'Lettuce', 'Spinachc', 'Kale', 'Cabbagecc', 'Bok Choy', 'Mustard Greens',
+  'Swiss Chard', 'Mizuna', 'Arugula', 'Komatsuna', 'Cherry Tomato',
+  'Eggplantc', 'Cucumber', 'Zucchini', 'Bell Pepper', 'Okra', 'Bitter Melon',
+  'Pumpkin', 'Snap Peas', 'Edamame', 'Black Bean', 'Chickpea', 'Lentil',
+  'Kidney Bean', 'Fava Bean', 'Lima Bean', 'Asparagus', 'Broccoli',
+  'Cauliflowercc', 'Celery', 'Onion', 'Garlic', 'Leek', 'Chive', 'Ginger',
+  'Cowpea', 'Persimmon', 'Sudachi', 'Malabar Spinach'
 ]
 
 // 固定の野菜カテゴリー＋投稿tagにだけ登場する未知のカテゴリーを、登場順に積み上げる（🕳は常時固定で末尾に表示）
