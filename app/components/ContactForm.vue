@@ -1,5 +1,6 @@
 <template>
-  <div style="font-size: 0.65625rem; letter-spacing: 0.05em;">
+  <!-- フォームの文字はメニューと同じ DM Mono（入力欄やボタンも含む） -->
+  <div class="font-dm-mono" style="font-size: 0.65625rem; letter-spacing: 0.05em;">
     <form v-if="status !== 'success'" class="space-y-4" novalidate @submit.prevent="handleSubmit">
       <div>
         <label for="contact-name" class="block mb-1 text-gray-500">Name</label>

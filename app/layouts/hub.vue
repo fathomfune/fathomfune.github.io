@@ -9,10 +9,10 @@
     <div
       class="flex flex-col sm:h-screen sm:flex-row sm:items-center sm:sticky sm:top-0"
       :class="isMeasured ? 'pt-[var(--hub-pt)] pb-[var(--hub-pb)] sm:pt-0 sm:pb-0' : 'h-screen'"
-      :style="isMeasured ? { '--hub-pt': `${mobileTop}px`, '--hub-pb': `${mobileGap}px` } : undefined"
+      :style="isMeasured ? { '--hub-pt': `${mobileTop}px`, '--hub-pb': `${mobileBottom}px` } : undefined"
     >
       <div v-if="!isMeasured" class="flex-1 sm:hidden" />
-      <div ref="panelEl" class="w-full min-w-0 pl-12 sm:pl-20 sm:pr-15">
+      <div ref="panelEl" class="w-full min-w-0 pl-3 sm:pl-20 sm:pr-15">
         <ConceptPanel />
       </div>
       <div v-if="!isMeasured" class="flex-[3] sm:hidden" />
@@ -37,6 +37,10 @@ const isMeasured = ref(false)
 // スマホは上端にメニューのバーが固定されているので、「舟」がその下に隠れないよう、バーの下から最低24pxは空ける
 const MIN_GAP_BELOW_BAR = 24
 const { barHeight: mobileBarHeight } = useMobileMenu()
+// Contact は中身（所在地）が短いので、下の余白は取らずにすぐフォームを続ける
+const route = useRoute()
+const mobileBottom = computed(() => (route.path === '/contact' ? 0 : mobileGap.value))
+
 const mobileTop = computed(() => Math.max(mobileGap.value / 2, mobileBarHeight.value + MIN_GAP_BELOW_BAR))
 
 // 上下中央に置いたときの、詩の上（または下）の空き

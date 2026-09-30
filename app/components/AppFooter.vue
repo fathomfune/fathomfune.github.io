@@ -7,7 +7,7 @@
           href="https://www.instagram.com/fylzith/"
           target="_blank"
           rel="noopener noreferrer"
-          class="font-dm-mono hover:text-[#0365a6] transition-colors"
+          class="font-garamond hover:text-[#0365a6] transition-colors"
         >Rina arai</a></span>
     </p>
     <NuxtLink
