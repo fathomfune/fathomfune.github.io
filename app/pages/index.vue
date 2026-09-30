@@ -48,7 +48,7 @@
     </div>
 
     <!-- 次の項目：Texts。正方形のサムネイル、記号とTexts、16px空けて明朝のタイトル。5列で間は4px。スマホは2列で、タイトルまでを8pxに詰め、上下の間を24pxに広げる -->
-    <div v-if="homeTexts.length" class="order-1 mx-3 mb-10 sm:mx-0 sm:mb-[20vh] grid grid-cols-2 sm:grid-cols-5 gap-x-1 gap-y-6 sm:gap-y-1">
+    <div v-if="homeTexts.length" class="order-1 mx-3 sm:mx-0 grid grid-cols-2 sm:grid-cols-5 gap-x-1 gap-y-6 sm:gap-y-1">
       <NuxtLink
         v-for="text in homeTexts" :key="text.id"
         :to="`/texts/${text.slug}`"
@@ -63,16 +63,18 @@
           />
         </div>
         <p class="mt-2 flex items-center gap-1 font-dm-mono text-[0.65rem] text-gray-900 tracking-wider leading-snug group-hover:text-[#0365a6] transition-colors duration-500"><span>⁺</span>Texts</p>
-        <p class="mt-2 sm:mt-[14px] font-garamond text-gray-900 break-words group-hover:text-[#0365a6] transition-colors duration-500" style="font-size: 0.75rem; letter-spacing: 0.03em; line-height: 1.5;">{{ text.title }}</p>
+        <p class="mt-2 sm:mt-2.5 font-garamond text-gray-900 break-words group-hover:text-[#0365a6] transition-colors duration-500" style="font-size: 0.75rem; letter-spacing: 0.03em; line-height: 1.5;">{{ text.title }}</p>
       </NuxtLink>
     </div>
 
     <div class="sm:hidden relative mt-10 mb-16 mx-3 h-[46vh]">
-      <NuxtLink v-for="link in mobileScatterLinks" :key="`m-${link.label}`"
+      <NuxtLink v-for="(link, i) in mobileScatterLinks" :key="`m-${link.label}`"
+        :ref="setMobileLinkEl(i)"
         :to="link.to"
         :target="link.external ? '_blank' : undefined"
         :rel="link.external ? 'noopener noreferrer' : undefined"
         class="group absolute inline-flex items-center gap-1 font-dm-mono text-[0.65rem] text-gray-900 tracking-wider hover:text-[#0365a6] transition-colors duration-500"
+        :class="mobileStuck[link.label] ? 'invisible' : ''"
         :style="{ top: link.top, left: link.left, right: link.right }"
       >
         <span class="inline-block transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] rotate-45 group-hover:rotate-0">{{ link.mark }}</span>{{ link.label }}
@@ -83,23 +85,6 @@
         class="absolute text-[0.6875rem] text-gray-600"
         :style="{ top: symbol.top, left: symbol.left, right: symbol.right }"
       >{{ symbol.ch }}</span>
-    </div>
-
-    <!-- クレジットは右のコンテンツ列の一番下。右端にプライバシーポリシー -->
-    <div class="order-2 mb-10 mx-3 sm:mx-0 flex flex-wrap items-baseline justify-between gap-x-4 font-garamond text-gray-900 whitespace-nowrap" style="font-size: 0.65625rem; letter-spacing: 0.03em; line-height: 1.6;">
-      <p class="font-garamond">
-        Copyright © Fune All rights reserved.<span class="ml-4 font-garamond">Built by
-          <a
-            href="https://www.instagram.com/fylzith/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="font-garamond hover:text-[#0365a6] transition-colors"
-          >Rina arai</a></span>
-      </p>
-      <NuxtLink
-        to="/privacy"
-        class="font-garamond hover:text-[#0365a6] transition-colors"
-      >Privacy Policy</NuxtLink>
     </div>
   </div>
 </template>
@@ -125,6 +110,43 @@ const sounds = [
   { date: '2025.08', title: 'Tide', to: '/building' },
   { date: '2025.06', title: 'Kitchen hum', to: '/building' }
 ]
+
+// スマホ：散らばったメニューがスクロールで左上のバーの下端まで上がってきたら、バーに移す（元の場所では隠す）
+const { stuck: mobileStuck, barHeight: mobileBarHeight } = useMobileMenu()
+const mobileLinkEls = []
+
+function setMobileLinkEl(i) {
+  return (el) => {
+    mobileLinkEls[i] = el?.$el ?? el
+  }
+}
+
+function updateMobileStuck() {
+  const next = {}
+  let changed = false
+  mobileScatterLinks.forEach((link, i) => {
+    const el = mobileLinkEls[i]
+    // デスクトップでは非表示なので判定しない
+    const isStuck = !!el && el.offsetParent !== null && el.getBoundingClientRect().top < mobileBarHeight.value
+    next[link.label] = isStuck
+    if (isStuck !== !!mobileStuck.value[link.label]) changed = true
+  })
+  if (changed) mobileStuck.value = next
+}
+
+onMounted(() => {
+  updateMobileStuck()
+  window.addEventListener('scroll', updateMobileStuck, { passive: true })
+  window.addEventListener('resize', updateMobileStuck, { passive: true })
+})
+
+watch(mobileBarHeight, updateMobileStuck)
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', updateMobileStuck)
+  window.removeEventListener('resize', updateMobileStuck)
+  mobileStuck.value = {}
+})
 
 const mobileShuffleSymbols = [
   { ch: '+ ⁺', top: '10%', right: '5%' },

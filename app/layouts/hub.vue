@@ -8,18 +8,22 @@
     -->
     <div
       class="flex flex-col sm:h-screen sm:flex-row sm:items-center sm:sticky sm:top-0"
-      :class="mobileGap ? 'pt-[var(--hub-pt)] pb-[var(--hub-pb)] sm:pt-0 sm:pb-0' : 'h-screen'"
-      :style="mobileGap ? { '--hub-pt': `${mobileGap / 2}px`, '--hub-pb': `${mobileGap}px` } : undefined"
+      :class="isMeasured ? 'pt-[var(--hub-pt)] pb-[var(--hub-pb)] sm:pt-0 sm:pb-0' : 'h-screen'"
+      :style="isMeasured ? { '--hub-pt': `${mobileTop}px`, '--hub-pb': `${mobileGap}px` } : undefined"
     >
-      <div v-if="!mobileGap" class="flex-1 sm:hidden" />
-      <div ref="panelEl" class="w-full min-w-0 pl-20">
+      <div v-if="!isMeasured" class="flex-1 sm:hidden" />
+      <div ref="panelEl" class="w-full min-w-0 pl-12 sm:pl-20 sm:pr-15">
         <ConceptPanel />
       </div>
-      <div v-if="!mobileGap" class="flex-[3] sm:hidden" />
+      <div v-if="!isMeasured" class="flex-[3] sm:hidden" />
     </div>
 
-    <div class="relative min-w-0 pr-1">
-      <slot />
+    <!-- 右の列：ページ本体の下にフッター（中身が短いページでも画面の一番下に来る） -->
+    <div class="relative min-w-0 pr-1 flex flex-col sm:min-h-screen">
+      <div class="flex-1">
+        <slot />
+      </div>
+      <AppFooter class="mb-10 mx-3 sm:mx-0" />
     </div>
   </div>
 </template>
@@ -27,11 +31,19 @@
 <script setup>
 const panelEl = ref(null)
 const mobileGap = ref(0)
+// 詩の高さを測れたか（測れるまでは上1：下3で空きを分けておく）
+const isMeasured = ref(false)
+
+// スマホは上端にメニューのバーが固定されているので、「舟」がその下に隠れないよう、バーの下から最低24pxは空ける
+const MIN_GAP_BELOW_BAR = 24
+const { barHeight: mobileBarHeight } = useMobileMenu()
+const mobileTop = computed(() => Math.max(mobileGap.value / 2, mobileBarHeight.value + MIN_GAP_BELOW_BAR))
 
 // 上下中央に置いたときの、詩の上（または下）の空き
 function measure() {
   const height = panelEl.value?.offsetHeight || 0
   mobileGap.value = Math.max(0, (window.innerHeight - height) / 2)
+  isMeasured.value = true
 }
 
 let observer

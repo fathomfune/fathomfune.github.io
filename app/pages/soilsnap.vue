@@ -1,31 +1,36 @@
 <template>
-  <div class="flex flex-col sm:flex-row w-full pt-67 gap-3 sm:gap-25 min-h-screen px-3 sm:px-[8.89vw]">
-    <!-- 上に固定されたフィルターメニュー（常に表示） -->
-    <div class="fixed top-12 left-0 right-0 z-20 pt-0 pb-4 px-3 sm:pl-[8.89vw] sm:pr-0">
-      <div class="sm:max-w-[884px] bg-white pt-0 pb-4 px-3 sm:px-0 font-dm-mono">
-        <div class="text-[0.65rem] text-gray-400 mb-1.5 select-none">+</div>
-        <div class="flex flex-wrap gap-x-4 gap-y-1 text-[0.65rem] text-gray-600">
-          <button
-            v-for="category in categories"
-            :key="category"
-            @click="selectCategory(category)"
-            :class="[
-              'transition-colors',
-              selectedCategory === category
-                ? 'text-gray-900 font-normal'
-                : 'text-gray-400 hover:text-gray-600'
-            ]"
-          >
-            {{ category }}
-          </button>
-        </div>
-      </div>
+  <!-- デスクトップはトップと同じく左33%：右67%。写真は右の列に置き、右端は4px空ける -->
+  <!-- スマホは、写真がカテゴリの帯のすぐ下から始まるように上の余白を合わせる -->
+  <div
+    class="flex flex-col sm:flex-row w-full pt-[var(--soilsnap-pt)] sm:pt-40 gap-3 sm:gap-0 min-h-screen px-3 sm:pl-0 sm:pr-1"
+    :style="{ '--soilsnap-pt': mobileTopPadding }"
+  >
+    <!--
+      スマホ：カテゴリはメニューバーの下の白い帯。下にスクロールすると一緒に上へ流れて隠れ、
+      上にスクロールすると、そのぶんだけ上から戻ってくる
+    -->
+    <div
+      ref="bandEl"
+      class="sm:hidden fixed left-0 right-0 z-20 bg-white px-3 pt-2 pb-3"
+      :style="{ top: `${mobileBarHeight}px`, transform: `translateY(${-bandOffset}px)` }"
+    >
+      <SoilsnapCategories
+        :categories="categories"
+        :selected="selectedCategory"
+        @select="selectCategory"
+      />
     </div>
 
-    <!-- 見出しは削除。左の余白（1/5）として残す -->
-    <aside class="w-full sm:w-1/5 min-w-0 sm:sticky sm:top-44 h-fit" />
+    <!-- デスクトップ：トップの詩と同じく、カテゴリは左33%の列に固定し、写真だけ右でスクロールする -->
+    <aside class="hidden sm:block w-[33%] shrink-0 min-w-0 sticky top-48 mt-8 h-fit pl-20 pr-15">
+      <SoilsnapCategories
+        :categories="categories"
+        :selected="selectedCategory"
+        @select="selectCategory"
+      />
+    </aside>
 
-    <main class="w-full sm:w-4/5">
+    <main class="w-full sm:w-[67%] min-w-0">
       <!-- 投稿があるとき：グリッド表示 -->
       <div
         v-if="soilsnaps.length"
@@ -36,7 +41,7 @@
                 selectedCategory === 'All'
                   ? 'columns-2 md:columns-3'
                   : 'columns-1 md:columns-3',
-                '[column-gap:12px] space-y-3'
+                '[column-gap:4px] space-y-1'
               ]
         "
       >
@@ -52,8 +57,11 @@
           <img
             v-if="item.image"
             :src="item.image"
+            :width="item.width || undefined"
+            :height="item.height || undefined"
             alt=""
-            class="w-full object-cover hover:opacity-90 transition-opacity"
+            decoding="async"
+            class="w-full h-auto object-cover hover:opacity-90 transition-opacity"
             :class="{ 'mb-2': item.text }"
           />
           <div
@@ -77,10 +85,49 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useFetch, useRuntimeConfig } from '#app'
 
 const config = useRuntimeConfig()
+
+// --- スマホのカテゴリの帯：スクロールに合わせて隠れたり戻ったりする ---
+const { barHeight: mobileBarHeight } = useMobileMenu()
+const bandEl = ref(null)
+const bandHeight = ref(0)
+// 帯を上にずらしている量（0 = 全部見えている、bandHeight = メニューバーの裏に全部隠れている）
+const bandOffset = ref(0)
+let lastScrollY = 0
+
+function onBandScroll() {
+  // iOS の引っぱりでマイナスになる分は無視する
+  const y = Math.max(0, window.scrollY)
+  const delta = y - lastScrollY
+  lastScrollY = y
+  bandOffset.value = Math.min(bandHeight.value, Math.max(0, bandOffset.value + delta))
+}
+
+// 写真は、メニューバーとカテゴリの帯の下から12px空けて始める（測れるまでは160px）
+const mobileTopPadding = computed(() =>
+  bandHeight.value ? `${mobileBarHeight.value + bandHeight.value + 12}px` : '160px'
+)
+
+let bandObserver
+
+onMounted(() => {
+  lastScrollY = Math.max(0, window.scrollY)
+  if (bandEl.value) {
+    bandObserver = new ResizeObserver(() => {
+      bandHeight.value = bandEl.value?.offsetHeight || 0
+    })
+    bandObserver.observe(bandEl.value)
+  }
+  window.addEventListener('scroll', onBandScroll, { passive: true })
+})
+
+onBeforeUnmount(() => {
+  bandObserver?.disconnect()
+  window.removeEventListener('scroll', onBandScroll)
+})
 
 const selectedCategory = ref('All')
 const emptyArt = ref('')
@@ -119,19 +166,19 @@ const { data: response } = await useFetch(
     },
     headers: {
       'X-MICROCMS-API-KEY': config.public.microcmsApiKey
-    }
+    },
+    // 並び順はビルド（プリレンダー）のときに一度だけランダムに決め、ページに書き込む。
+    // ブラウザは同じデータを使うので、何度リロードしても同じ順番で、表示直後に入れ替わらない
+    transform: res => ({ ...res, contents: shuffledCopy(res?.contents || []) })
   }
 )
 
 const allSoilsnaps = computed(() => {
   if (!response.value?.contents) return []
   return response.value.contents.map(item => {
-    let imageUrl = ''
-    if (item.image && Array.isArray(item.image) && item.image.length > 0) {
-      imageUrl = item.image[0].url + '?w=800&q=80'
-    } else if (item.image?.url) {
-      imageUrl = item.image.url + '?w=800&q=80'
-    }
+    // microCMS の画像は width / height を持っているので、読み込み前から縦横比を確保できる
+    const imageField = Array.isArray(item.image) ? item.image[0] : item.image
+    const imageUrl = imageField?.url ? imageField.url + '?w=800&q=80' : ''
 
     let categoryLabel = ''
     const tagField = item.tag || item.category
@@ -150,6 +197,8 @@ const allSoilsnaps = computed(() => {
 
     return {
       image: imageUrl,
+      width: imageField?.width || 0,
+      height: imageField?.height || 0,
       text: item.text || item.title || '',
       id: item.id,
       slug: item.slug,
@@ -215,7 +264,8 @@ const soilsnaps = computed(() => {
   void shuffleSeed.value
 
   if (selectedCategory.value === 'All') {
-    return shuffledCopy(allSoilsnaps.value)
+    // 最初はビルド時に決めた順番のまま。カテゴリを押したら振り直す
+    return shuffleSeed.value === 0 ? allSoilsnaps.value : shuffledCopy(allSoilsnaps.value)
   }
 
   if (selectedCategory.value === '🕳') {

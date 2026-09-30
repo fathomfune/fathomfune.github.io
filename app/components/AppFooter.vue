@@ -1,24 +1,18 @@
 <template>
-  <footer class="w-full mt-24 py-10 px-3 sm:px-[8.89vw]">
-    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-      <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.625rem] text-gray-400 tracking-widest">
-        <span>Copyright © Fune All rights reserved.</span>
-        <span>Built by Rina Arai</span>
-      </div>
-
-      <nav class="flex flex-wrap gap-x-4 gap-y-2 text-[0.625rem] text-gray-900 tracking-widest">
-        <NuxtLink to="/" class="hover:text-gray-600 transition-colors">yao</NuxtLink>
-        <NuxtLink to="/texts" class="hover:text-gray-600 transition-colors">texts</NuxtLink>
-        <NuxtLink to="/soilsnap" class="hover:text-gray-600 transition-colors">soilsnap</NuxtLink>
+  <!-- 全ページ共通のフッター：クレジットと、右端にプライバシーポリシー（スマホはクレジットの上）。上の中身との間は120px -->
+  <footer class="mt-30 flex flex-col-reverse items-start gap-y-1 sm:flex-row sm:flex-wrap sm:items-baseline sm:justify-between gap-x-4 font-garamond text-gray-900 whitespace-nowrap" style="font-size: 0.65625rem; letter-spacing: 0.03em; line-height: 1.6;">
+    <p class="font-garamond">
+      Copyright © Fune All rights reserved.<span class="ml-4 font-garamond">Built by
         <a
-          href="https://www.instagram.com/fathomfune"
+          href="https://www.instagram.com/fylzith/"
           target="_blank"
           rel="noopener noreferrer"
-          class="hover:text-gray-600 transition-colors"
-        >
-          instagram
-        </a>
-      </nav>
-    </div>
+          class="font-dm-mono hover:text-[#0365a6] transition-colors"
+        >Rina arai</a></span>
+    </p>
+    <NuxtLink
+      to="/privacy"
+      class="font-garamond hover:text-[#0365a6] transition-colors"
+    >Privacy Policy</NuxtLink>
   </footer>
 </template>

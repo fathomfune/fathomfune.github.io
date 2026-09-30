@@ -1,4 +1,34 @@
 <template>
+  <!--
+    スマホ：左上に固定したバー。メニューは決まった順番で横に並び、折り返して積み重なる。
+    トップでは、散らばったメニューがスクロールでバーまで上がってきたものから順に現れる。ほかのページでは最初から全部並ぶ
+  -->
+  <nav
+    ref="mobileBar"
+    class="sm:hidden fixed top-0 inset-x-0 z-40 bg-white px-3 py-2.5 transition-opacity duration-300"
+    :class="isDissolving ? 'opacity-0' : 'opacity-100'"
+  >
+    <div class="flex flex-wrap items-center gap-x-3 gap-y-1 font-dm-mono text-[0.65rem] text-gray-900 tracking-wider">
+      <NuxtLink
+        v-for="link in MENU_LINKS" :key="link.label"
+        :to="link.to"
+        :target="link.external ? '_blank' : undefined"
+        :rel="link.external ? 'noopener noreferrer' : undefined"
+        class="inline-flex items-center gap-1 transition-opacity duration-300"
+        :class="isInMobileBar(link) ? 'opacity-100' : 'opacity-0 pointer-events-none'"
+        :tabindex="isInMobileBar(link) ? undefined : -1"
+      >
+        <span class="inline-block rotate-45">{{ link.mark }}</span>{{ link.label }}
+      </NuxtLink>
+
+      <button
+        type="button"
+        class="ml-auto"
+        @click="lang = lang === 'en' ? 'ja' : 'en'"
+      >☄︎. {{ lang === 'en' ? 'EN' : 'JP' }}</button>
+    </div>
+  </nav>
+
   <!-- メニューは画面に固定したレイヤーに置く。トップではスクロール量だけ上へずらして上端で止め、ほかのページでは最初から上端に並べる -->
   <div
     ref="menuLayer"
@@ -11,7 +41,7 @@
       :target="link.external ? '_blank' : undefined"
       :rel="link.external ? 'noopener noreferrer' : undefined"
       class="sparkle-link group pointer-events-auto absolute inline-flex items-center gap-1 font-dm-mono text-[0.65rem] text-gray-900 tracking-wider hover:text-[#0365a6] transition-colors duration-500"
-      :style="{ top: link.top, left: link.left, right: link.right, transform: `translateY(${-menuOffset(link.top, i)}px)` }"
+      :style="{ top: topStyle(link.top), left: link.left, right: link.right, transform: `translateY(${-menuOffset(link.top, i)}px)` }"
     >
       <span class="inline-block transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] rotate-45 group-hover:rotate-0">{{ link.mark }}</span>{{ link.label }}
 
@@ -26,7 +56,7 @@
     <div
       ref="langEl"
       class="pointer-events-auto absolute right-[3%] inline-flex items-center gap-1.5 font-dm-mono text-[0.65rem] tracking-wider"
-      :style="{ top: LANG_TOP, transform: `translateY(${-menuOffset(LANG_TOP, 'lang')}px)` }"
+      :style="{ top: topStyle(LANG_TOP), transform: `translateY(${-menuOffset(LANG_TOP, 'lang')}px)` }"
     >
       <!-- 今の言語だけを「☄︎. EN」「☄︎. JP」と出し、押すともう一方に切り替える -->
       <button
@@ -56,6 +86,23 @@ const sparkles = [
   { ch: '𖦹', dx: '-18px', dy: '14px', delay: '0.03s' },
   { ch: '⁺', dx: '2px', dy: '-24px', delay: '0.09s' }
 ]
+
+// メニューの中身と並び順（スマホのバーはいつもこの順番）
+const MENU_LINKS = [
+  { to: '/texts', label: 'Texts', mark: '⁺' },
+  { to: '/building', label: 'First frost', mark: '⊹' },
+  { to: '/soilsnap', label: 'Soilsnap', mark: '⊹' },
+  { to: '/contact', label: 'Contact', mark: '⊹' },
+  { to: '/building', label: 'Sound', mark: '᠀.' },
+  { to: 'https://www.instagram.com/fathomfune', label: 'Instagram', mark: '⊹', external: true }
+]
+
+const { stuck: mobileStuck, barHeight: mobileBarHeight } = useMobileMenu()
+const mobileBar = ref(null)
+
+function isInMobileBar(link) {
+  return !isHome.value || !!mobileStuck.value[link.label]
+}
 
 const scatterLinks = ref([
   { to: '/texts', label: 'Texts', mark: '⁺', top: '10%', left: '13%' },
@@ -96,10 +143,19 @@ function onResize() {
 }
 
 // 元の位置（top: xx%）から上端までは一緒にスクロールし、そこから先は止まる。トップ以外では常に上端
+// 文字が半端なピクセル位置に描かれると、字間や太さがほかと違って見えるので、位置は整数pxにそろえる
+function naturalTopPx(top) {
+  return Math.round((parseFloat(top) / 100) * viewportHeight.value)
+}
+
+// top（xx%）を整数pxに直す。画面の高さを測るまでは%のまま
+function topStyle(top) {
+  return viewportHeight.value ? `${naturalTopPx(top)}px` : top
+}
+
 function stuckOffset(top) {
-  const naturalTop = (parseFloat(top) / 100) * viewportHeight.value
-  const toTop = Math.max(0, naturalTop - STICK_TOP)
-  return isHome.value ? Math.min(scrollY.value, toTop) : toTop
+  const toTop = Math.max(0, naturalTopPx(top) - STICK_TOP)
+  return isHome.value ? Math.min(Math.round(scrollY.value), toTop) : toTop
 }
 
 // ページを移るときは、メニューを今の位置のまま消してから、新しい位置で現れるようにする（ディゾルブ）
@@ -148,7 +204,15 @@ const removeAfterHook = router.afterEach(() => {
   }, remaining)
 })
 
+let mobileBarObserver
+
 onMounted(() => {
+  if (mobileBar.value) {
+    mobileBarObserver = new ResizeObserver(() => {
+      mobileBarHeight.value = mobileBar.value?.offsetHeight || 0
+    })
+    mobileBarObserver.observe(mobileBar.value)
+  }
   onResize()
   onScroll()
   window.addEventListener('scroll', onScroll, { passive: true })
@@ -159,6 +223,7 @@ onBeforeUnmount(() => {
   window.removeEventListener('scroll', onScroll)
   window.removeEventListener('resize', onResize)
   clearTimeout(dissolveTimer)
+  mobileBarObserver?.disconnect()
   removeBeforeGuard()
   removeAfterHook()
 })

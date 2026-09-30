@@ -1,24 +1,6 @@
 <template>
   <UContainer class="py-20 max-w-2xl mx-0 px-3 sm:px-0 sm:pl-[10.5vw] lg:px-0 lg:pl-[10.5vw]">
     <div class="flex items-center gap-3 mb-10">
-      <!-- スマホには右上のメニューがないので、ここで言語を切り替える -->
-      <div class="flex sm:hidden items-center gap-1.5 text-[0.6875rem]">
-        <button
-          type="button"
-          :class="['transition-colors', lang === 'ja' ? 'text-gray-900 font-medium' : 'text-gray-400 hover:text-gray-600']"
-          @click="lang = 'ja'"
-        >
-          JP
-        </button>
-        <span class="text-gray-300">/</span>
-        <button
-          type="button"
-          :class="['transition-colors', lang === 'en' ? 'text-gray-900 font-medium' : 'text-gray-400 hover:text-gray-600']"
-          @click="lang = 'en'"
-        >
-          EN
-        </button>
-      </div>
     </div>
 
     <div :class="[bodyFont, 'text-gray-900']" style="font-size: 0.75rem; letter-spacing: 0.03em; line-height: 1.6;">

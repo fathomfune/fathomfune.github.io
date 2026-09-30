@@ -19,11 +19,6 @@ const item = computed(() => response.value?.contents?.find(c => c.slug === slug)
 
 // --- 日本語 / 英語切り替え（一覧ページのトグルと状態を共有） ---
 const lang = useTextLang()
-const hasEnglish = computed(() => !!(item.value?.['title-en'] || item.value?.['text-en']))
-
-function setLang(value) {
-  lang.value = value
-}
 
 const displayTitle = computed(() => {
   if (lang.value === 'en' && item.value?.['title-en']) return item.value['title-en']
@@ -258,29 +253,6 @@ watch(
               <ClientOnly>
                 <time>{{ formattedDate }}</time>
               </ClientOnly>
-              <div v-if="hasEnglish" class="flex sm:hidden items-center gap-1.5 text-[0.6875rem]">
-                <button
-                  type="button"
-                  :class="[
-                    'transition-colors',
-                    lang === 'ja' ? 'text-gray-900 font-medium' : 'text-gray-400 hover:text-gray-600'
-                  ]"
-                  @click="setLang('ja')"
-                >
-                  JP
-                </button>
-                <span class="text-gray-300">/</span>
-                <button
-                  type="button"
-                  :class="[
-                    'transition-colors',
-                    lang === 'en' ? 'text-gray-900 font-medium' : 'text-gray-400 hover:text-gray-600'
-                  ]"
-                  @click="setLang('en')"
-                >
-                  EN
-                </button>
-              </div>
             </div>
           </div>
 
