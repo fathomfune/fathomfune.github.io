@@ -1,5 +1,5 @@
 <template>
-  <div style="font-size: 10.5px; letter-spacing: 0.05em;">
+  <div style="font-size: 0.65625rem; letter-spacing: 0.05em;">
     <form v-if="status !== 'success'" class="space-y-4" novalidate @submit.prevent="handleSubmit">
       <div>
         <label for="contact-name" class="block mb-1 text-gray-500">Name</label>
@@ -13,7 +13,7 @@
           @input="fieldErrors.name = ''"
         >
         <Transition name="field-error">
-          <p v-if="fieldErrors.name" class="mt-1 text-[10px] tracking-normal text-rose-400">{{ fieldErrors.name }}</p>
+          <p v-if="fieldErrors.name" class="mt-1 text-[0.625rem] tracking-normal text-rose-400">{{ fieldErrors.name }}</p>
         </Transition>
       </div>
 
@@ -29,7 +29,7 @@
           @input="fieldErrors.email = ''"
         >
         <Transition name="field-error">
-          <p v-if="fieldErrors.email" class="mt-1 text-[10px] tracking-normal text-rose-400">{{ fieldErrors.email }}</p>
+          <p v-if="fieldErrors.email" class="mt-1 text-[0.625rem] tracking-normal text-rose-400">{{ fieldErrors.email }}</p>
         </Transition>
       </div>
 
@@ -45,7 +45,7 @@
           @input="fieldErrors.message = ''"
         />
         <Transition name="field-error">
-          <p v-if="fieldErrors.message" class="mt-1 text-[10px] tracking-normal text-rose-400">{{ fieldErrors.message }}</p>
+          <p v-if="fieldErrors.message" class="mt-1 text-[0.625rem] tracking-normal text-rose-400">{{ fieldErrors.message }}</p>
         </Transition>
       </div>
 
@@ -66,12 +66,6 @@
       <p class="text-gray-600">
         Thank you. Your message has been sent.
       </p>
-      <NuxtLink
-        to="/"
-        class="mt-2 inline-flex items-center text-[11px] text-gray-400 hover:text-[#0365a6] transition-colors"
-      >
-        ･: Back
-      </NuxtLink>
     </div>
   </div>
 </template>

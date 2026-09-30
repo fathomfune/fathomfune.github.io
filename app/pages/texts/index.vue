@@ -1,7 +1,7 @@
 <script setup>
 const config = useRuntimeConfig()
 const { data, error } = await useFetch(
-  `https://${config.public.microcmsServiceDomain}.microcms.io/api/v1/writings`,
+  `https://${config.public.microcmsServiceDomain}.microcms.io/api/v1/texts`,
   {
     headers: {
       'X-MICROCMS-API-KEY': config.public.microcmsApiKey
@@ -27,14 +27,7 @@ function titleFor(item) {
 <template>
   <UContainer class="py-20 max-w-2xl mx-0 px-3 sm:px-0 sm:pl-[10.5vw] lg:px-0 lg:pl-[10.5vw]">
     <div class="flex items-center gap-3 mb-6">
-      <NuxtLink
-        to="/"
-        class="inline-flex items-center text-[11px] text-gray-400 hover:text-[#0365a6] transition-colors"
-      >
-        ･: Back
-      </NuxtLink>
-      <span class="text-gray-300 text-[11px]">/</span>
-      <div class="flex items-center gap-1.5 text-[11px]">
+      <div class="flex sm:hidden items-center gap-1.5 text-[0.6875rem]">
         <button
           type="button"
           :class="[
@@ -43,7 +36,7 @@ function titleFor(item) {
           ]"
           @click="setLang('ja')"
         >
-          JA
+          JP
         </button>
         <span class="text-gray-300">/</span>
         <button
@@ -63,15 +56,15 @@ function titleFor(item) {
       <NuxtLink
         v-for="item in data.contents"
         :key="item.id"
-        :to="`/writings/${item.slug}`"
+        :to="`/texts/${item.slug}`"
         class="group block py-0.5"
       >
         <h2
           class="writings-index-title text-gray-900 font-garamond leading-tight group-hover:text-[#0365a6] transition-colors"
           :style="{
             fontSize: isEnglishFor(item)
-              ? 'clamp(9px, 1.9vh, 13px)'
-              : 'clamp(8px, calc(1.9vh - 1px), 12px)'
+              ? 'clamp(0.5625rem, 1.9vh, 0.8125rem)'
+              : 'clamp(0.5rem, calc(1.9vh - 0.0625rem), 0.75rem)'
           }"
         >
           {{ titleFor(item) }}

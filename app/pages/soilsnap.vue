@@ -1,10 +1,10 @@
 <template>
-  <div class="flex flex-col sm:flex-row w-full pt-55 gap-3 sm:gap-25 min-h-screen px-3 sm:px-[8.89vw]">
+  <div class="flex flex-col sm:flex-row w-full pt-67 gap-3 sm:gap-25 min-h-screen px-3 sm:px-[8.89vw]">
     <!-- 上に固定されたフィルターメニュー（常に表示） -->
-    <div class="fixed top-0 left-0 right-0 z-20 pt-0 pb-4 px-3 sm:pl-[8.89vw] sm:pr-0">
-      <div class="sm:max-w-[884px] bg-white pt-0 pb-4 px-3 sm:px-0">
-        <div class="text-[11px] text-gray-400 mb-1.5 select-none">+</div>
-        <div class="flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-gray-600">
+    <div class="fixed top-12 left-0 right-0 z-20 pt-0 pb-4 px-3 sm:pl-[8.89vw] sm:pr-0">
+      <div class="sm:max-w-[884px] bg-white pt-0 pb-4 px-3 sm:px-0 font-dm-mono">
+        <div class="text-[0.65rem] text-gray-400 mb-1.5 select-none">+</div>
+        <div class="flex flex-wrap gap-x-4 gap-y-1 text-[0.65rem] text-gray-600">
           <button
             v-for="category in categories"
             :key="category"
@@ -12,7 +12,7 @@
             :class="[
               'transition-colors',
               selectedCategory === category
-                ? 'text-gray-900 font-medium'
+                ? 'text-gray-900 font-normal'
                 : 'text-gray-400 hover:text-gray-600'
             ]"
           >
@@ -22,17 +22,8 @@
       </div>
     </div>
 
-    <aside class="w-full sm:w-1/5 min-w-0 sm:sticky sm:top-32 h-fit">
-      <div>
-        <h2 class="text-lg font-bold mb-2">soilsnap</h2>
-        <NuxtLink
-          to="/"
-          class="inline-flex items-center text-[11px] text-gray-400 hover:text-[#0365a6] transition-colors"
-        >
-          ･: Back
-        </NuxtLink>
-      </div>
-    </aside>
+    <!-- 見出しは削除。左の余白（1/5）として残す -->
+    <aside class="w-full sm:w-1/5 min-w-0 sm:sticky sm:top-44 h-fit" />
 
     <main class="w-full sm:w-4/5">
       <!-- 投稿があるとき：グリッド表示 -->
@@ -77,7 +68,7 @@
       <!-- 投稿がないとき：AAをランダム表示 -->
       <div
         v-else
-        class="flex justify-start py-16 text-[11px] leading-tight text-gray-500 whitespace-pre text-left"
+        class="flex justify-start py-16 text-[0.6875rem] leading-tight text-gray-500 whitespace-pre text-left"
       >
         {{ emptyArt }}
       </div>
@@ -153,6 +144,9 @@ const allSoilsnaps = computed(() => {
         categoryLabel = tagField
       }
     }
+
+    // microCMS側のtag表記に前後の余白が混ざっていても同じカテゴリーとして扱う
+    categoryLabel = categoryLabel.trim()
 
     return {
       image: imageUrl,

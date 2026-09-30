@@ -4,7 +4,7 @@
     <div class="hidden sm:block absolute inset-0 pointer-events-none">
       <div
         class="pointer-events-auto absolute w-[320px]"
-        style="top: 30%; left: 56%;"
+        style="top: 30%; left: 34%;"
       >
         <ContactForm />
       </div>

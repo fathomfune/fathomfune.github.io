@@ -4,7 +4,7 @@ const slug = route.params.slug
 const config = useRuntimeConfig()
 
 const { data: response, error } = await useFetch(
-  `https://${config.public.microcmsServiceDomain}.microcms.io/api/v1/writings`,
+  `https://${config.public.microcmsServiceDomain}.microcms.io/api/v1/texts`,
   {
     params: {
       limit: 100
@@ -249,16 +249,16 @@ watch(
               </h1>
               <p
                 v-if="subTitle"
-                class="mt-1 text-[11px] text-gray-400 font-garamond min-w-0 whitespace-normal break-words [overflow-wrap:anywhere] leading-tight"
+                class="mt-1 text-[0.6875rem] text-gray-400 font-garamond min-w-0 whitespace-normal break-words [overflow-wrap:anywhere] leading-tight"
               >
                 {{ subTitle }}
               </p>
             </div>
-            <div class="flex items-center gap-3 text-[10px] text-gray-500">
+            <div class="flex items-center gap-3 text-[0.625rem] text-gray-500">
               <ClientOnly>
                 <time>{{ formattedDate }}</time>
               </ClientOnly>
-              <div v-if="hasEnglish" class="flex items-center gap-1.5 text-[11px]">
+              <div v-if="hasEnglish" class="flex sm:hidden items-center gap-1.5 text-[0.6875rem]">
                 <button
                   type="button"
                   :class="[
@@ -267,7 +267,7 @@ watch(
                   ]"
                   @click="setLang('ja')"
                 >
-                  JA
+                  JP
                 </button>
                 <span class="text-gray-300">/</span>
                 <button
@@ -326,7 +326,7 @@ watch(
                 <!-- 注釈マーカー：数字は振らず点だけ。中身は右の注釈パネルに常に表示 -->
                 <sup
                   v-else
-                  class="align-super ml-1 text-[10px] leading-none text-gray-400"
+                  class="align-super ml-1 text-[0.625rem] leading-none text-gray-400"
                   :class="noteFor(part.slug) ? 'opacity-100' : 'opacity-30'"
                 >˙</sup>
               </template>
@@ -339,7 +339,7 @@ watch(
             :key="`note-row-${index}`"
             :class="[
               line.isBlank ? 'logs-row-blank' : 'logs-row-sep',
-              'logs-note-row text-[11px] justify-self-end w-[220px] overflow-visible relative'
+              'logs-note-row text-[0.6875rem] justify-self-end w-[220px] overflow-visible relative'
             ]"
             :style="{
               gridColumn: '4',
@@ -368,16 +368,6 @@ watch(
               </div>
             </div>
           </div>
-          <NuxtLink
-            to="/writings"
-            class="inline-flex items-center mt-6 text-[11px] text-gray-400 hover:text-[#0365a6] transition-colors"
-            :style="{
-              gridColumn: '2',
-              gridRow: String((hasImage ? 2 : 1) + numberedLines.length)
-            }"
-          >
-            ･: Back
-          </NuxtLink>
           </div>
         </div>
       </div>

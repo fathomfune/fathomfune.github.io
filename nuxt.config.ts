@@ -45,6 +45,12 @@ export default defineNuxtConfig({
     }
   },
 
+  // 4.5. 以前の /writings のURLは /texts に転送する
+  routeRules: {
+    '/writings': { redirect: { to: '/texts', statusCode: 301 } },
+    '/writings/**': { redirect: { to: '/texts/**', statusCode: 301 } }
+  },
+
   // 5. 個別記事の取得が一時的に失敗しても、サイト全体のビルドは止めない。
   //    microCMSへの一時的な通信エラーに備えてリトライも強化する
   nitro: {

@@ -1,57 +1,46 @@
 <template>
   <div class="text-gray-900">
+    <!-- 英語表示は DM Mono の「Fune」、日本語表示は以前と同じ游ゴシックの「舟」 -->
     <NuxtLink
       to="/"
-      style="font-family: 'Yu Gothic', 'YuGothic', '游ゴシック', sans-serif; font-size: clamp(9px, 1.9vh, 13px);"
+      :style="lang === 'ja' ? { fontFamily: `'Yu Gothic', 'YuGothic', '游ゴシック', sans-serif`, fontSize: '0.8125rem' } : { fontSize: '0.8125rem' }"
       class="mb-10 inline-block hover:text-[#0365a6] transition-colors"
-    >舟</NuxtLink>
+      :class="lang === 'ja' ? '' : 'font-dm-mono'"
+    >{{ lang === 'ja' ? '舟' : 'Fune' }}</NuxtLink>
     <div
       class="whitespace-pre-wrap font-garamond"
-      style="font-size: 12.5px; letter-spacing: 0.03em; line-height: 1.6;"
+      style="font-size: 0.75rem; letter-spacing: 0.03em; line-height: 1.5;"
     >{{ content }}</div>
-
-    <p v-if="isHome" class="hidden sm:block mt-8 font-garamond text-gray-400 whitespace-nowrap" style="font-size: 10.5px; letter-spacing: 0.03em; line-height: 1.6;">
-      Copyright © Fune All rights reserved. Built by
-      <a
-        href="https://www.instagram.com/fylzith/"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="font-garamond hover:text-gray-600 transition-colors"
-      >Rina arai</a>
-    </p>
   </div>
 </template>
 
 <script setup>
-const route = useRoute()
-const isHome = computed(() => route.path === '/')
+const lang = useTextLang()
 
+// 詩の全角スペースは意図したもの
+/* eslint-disable no-irregular-whitespace */
 const content = `Fune explores the creation
-                    of a system where,
-no matter the circumstances,
+                    of a system where,  no matter
+the circumstances,
             people can eat with peace of        mind,
-                                        sleep under a roof
-                                                        even when it rains,
-    and face tomorrow.
-
+                              sleep under a roof
+     even when it rains,              and face tomorrow.
 
 At     our core,
          there is a   shared philosophy —
-                                    yet no fixed structure.
-
+                         yet no fixed structure.
 Wrestling with       ourselves,
-            we      are always in motion,
-    transforming,
-                        becoming.
+             we      are always in motion,
+     transforming,                          becoming.
 
 
 Today, we might be
-those who till the soil,
-                those who       coax the ferment,
-    acupuncturists, cooks,
-                    architects —
+those who                     till the soil,
+                those who        　     coax the ferment,
+    acupuncturists, cooks,　　　　architects —
 
                                 and on another day, perhaps,
 
-                                                alchemists.`
+            alchemists.`
+/* eslint-enable no-irregular-whitespace */
 </script>

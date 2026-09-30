@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Coral+Pixels&family=DotGothic16&family=Cormorant+Garamond:wght@400;500;600&family=Shippori+Mincho:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Coral+Pixels&family=DM+Mono:wght@300;400;500&family=DotGothic16&family=Cormorant+Garamond:wght@400;500;600&family=Shippori+Mincho:wght@400;500;600;700&display=swap');
+
+/* ᠀ (U+1800) を表示するための Noto Sans Mongolian（この1文字だけ読み込む） */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mongolian&text=%E1%A0%80&display=swap');
 
 @import "tailwindcss";
 @import "@nuxt/ui";
@@ -50,9 +53,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 
+/* メニュー用の DM Mono */
+.font-dm-mono,
+.font-dm-mono * {
+  font-family: "DM Mono", "Noto Sans Mongolian", ui-monospace, monospace !important;
+}
+
+
 /* Logs本文（中央カラム） */
 .logs-body-line {
-  font-size: 13px;
+  font-size: 0.8125rem;
   letter-spacing: 0.03em;
   line-height: 1.85;
 
@@ -127,11 +137,11 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .logs-body-line {
-    font-size: 12px;
+    font-size: 0.75rem;
   }
 
   .writings-index-title {
-    font-size: 12px !important;
+    font-size: 0.75rem !important;
   }
 }
 

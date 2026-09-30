@@ -1,14 +1,14 @@
 <template>
   <footer class="w-full mt-24 py-10 px-3 sm:px-[8.89vw]">
     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-      <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] text-gray-400 tracking-widest">
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.625rem] text-gray-400 tracking-widest">
         <span>Copyright © Fune All rights reserved.</span>
         <span>Built by Rina Arai</span>
       </div>
 
-      <nav class="flex flex-wrap gap-x-4 gap-y-2 text-[10px] text-gray-900 tracking-widest">
+      <nav class="flex flex-wrap gap-x-4 gap-y-2 text-[0.625rem] text-gray-900 tracking-widest">
         <NuxtLink to="/" class="hover:text-gray-600 transition-colors">yao</NuxtLink>
-        <NuxtLink to="/writings" class="hover:text-gray-600 transition-colors">writings</NuxtLink>
+        <NuxtLink to="/texts" class="hover:text-gray-600 transition-colors">texts</NuxtLink>
         <NuxtLink to="/soilsnap" class="hover:text-gray-600 transition-colors">soilsnap</NuxtLink>
         <a
           href="https://www.instagram.com/fathomfune"
