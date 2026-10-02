@@ -12,14 +12,14 @@
       :style="isMeasured ? { '--hub-pt': `${mobileTop}px`, '--hub-pb': `${mobileBottom}px` } : undefined"
     >
       <div v-if="!isMeasured" class="flex-1 sm:hidden" />
-      <div ref="panelEl" class="w-full min-w-0 pl-3 sm:pl-20 sm:pr-15">
+      <div ref="panelEl" class="w-full min-w-0 pl-9 sm:pl-20 sm:pr-15">
         <ConceptPanel />
       </div>
       <div v-if="!isMeasured" class="flex-[3] sm:hidden" />
     </div>
 
     <!-- 右の列：ページ本体の下にフッター（中身が短いページでも画面の一番下に来る） -->
-    <div class="relative min-w-0 pr-1 flex flex-col sm:min-h-screen">
+    <div class="relative min-w-0 sm:pr-1 flex flex-col sm:min-h-screen">
       <div class="flex-1">
         <slot />
       </div>

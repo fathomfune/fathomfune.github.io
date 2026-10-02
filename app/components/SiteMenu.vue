@@ -93,7 +93,7 @@ const MENU_LINKS = [
   { to: '/building', label: 'First frost', mark: '⊹' },
   { to: '/soilsnap', label: 'Soilsnap', mark: '⊹' },
   { to: '/contact', label: 'Contact', mark: '⊹' },
-  { to: '/building', label: 'Sound', mark: '᠀.' },
+  { to: '/sound', label: 'Sound', mark: '᠀.' },
   { to: 'https://www.instagram.com/fathomfune', label: 'Instagram', mark: '⊹', external: true }
 ]
 
@@ -109,7 +109,7 @@ const scatterLinks = ref([
   { to: '/building', label: 'First frost', mark: '⊹', top: '70%', right: '9%' },
   { to: '/soilsnap', label: 'Soilsnap', mark: '⊹', top: '44%', left: '37%' },
   { to: '/contact', label: 'Contact', mark: '⊹', top: '20%', right: '24%' },
-  { to: '/building', label: 'Sound', mark: '᠀.', top: '88%', left: '19%' },
+  { to: '/sound', label: 'Sound', mark: '᠀.', top: '88%', left: '19%' },
   { to: 'https://www.instagram.com/fathomfune', label: 'Instagram', mark: '⊹', top: '60%', right: '45%', external: true }
 ])
 

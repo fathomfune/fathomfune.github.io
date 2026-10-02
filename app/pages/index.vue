@@ -28,24 +28,8 @@
       </div>
     </div>
 
-    <!-- 次の項目：Sound。写真と同じ2列にして、タイトルを2枚目の写真の左端に揃える。右端にアイコン -->
-    <div class="order-1 mx-3 mb-24 sm:mx-0 flex flex-col gap-1">
-      <NuxtLink
-        v-for="sound in sounds" :key="sound.date + sound.title"
-        :to="sound.to"
-        class="grid grid-cols-2 gap-1 font-dm-mono text-[0.65rem] text-gray-900 tracking-wider leading-snug hover:text-[#0365a6] transition-colors duration-500"
-      >
-        <!-- 日付はタイトルの左端から96pxのところで終わる（列の間隔4px + 92px） -->
-        <span class="flex justify-between gap-4">
-          <span class="inline-flex items-center gap-1"><span>᠀.</span>Sound</span>
-          <span class="mr-[92px]">{{ sound.date }}</span>
-        </span>
-        <span class="flex min-w-0 items-center gap-2">
-          <span class="min-w-0 truncate">{{ sound.title }}</span>
-          <img src="/icons/cube-alt-02.svg" alt="" class="ml-auto size-3 shrink-0" />
-        </span>
-      </NuxtLink>
-    </div>
+    <!-- 次の項目：Sound。新しいものから6件 -->
+    <SoundList :sounds="sounds" class="order-1 mx-3 mb-24 sm:mx-0" />
 
     <!-- 次の項目：Texts。正方形のサムネイル、記号とTexts、16px空けて明朝のタイトル。5列で間は4px。スマホは2列で、タイトルまでを8pxに詰め、上下の間を24pxに広げる -->
     <div v-if="homeTexts.length" class="order-1 mx-3 sm:mx-0 grid grid-cols-2 sm:grid-cols-5 gap-x-1 gap-y-6 sm:gap-y-1">
@@ -97,19 +81,11 @@ const mobileScatterLinks = [
   { to: '/building', label: 'First frost', mark: '⊹', top: '20%', right: '10%' },
   { to: '/soilsnap', label: 'Soilsnap', mark: '⊹', top: '40%', left: '45%' },
   { to: '/contact', label: 'Contact', mark: '⊹', top: '55%', left: '5%' },
-  { to: '/building', label: 'Sound', mark: '᠀.', top: '72%', right: '20%' },
+  { to: '/sound', label: 'Sound', mark: '᠀.', top: '72%', right: '20%' },
   { to: 'https://www.instagram.com/fathomfune', label: 'Instagram', mark: '⊹', top: '90%', left: '30%', external: true }
 ]
 
-// Sound の項目（いまはダミー。R2 の準備ができたら差し替える）
-const sounds = [
-  { date: '2026.04', title: 'Morning soil', to: '/building' },
-  { date: '2026.02', title: 'Slow ferment', to: '/building' },
-  { date: '2025.12', title: 'First frost', to: '/building' },
-  { date: '2025.10', title: 'Rain on the roof', to: '/building' },
-  { date: '2025.08', title: 'Tide', to: '/building' },
-  { date: '2025.06', title: 'Kitchen hum', to: '/building' }
-]
+const sounds = useSounds().slice(0, 6)
 
 // スマホ：散らばったメニューがスクロールで左上のバーの下端まで上がってきたら、バーに移す（元の場所では隠す）
 const { stuck: mobileStuck, barHeight: mobileBarHeight } = useMobileMenu()
